@@ -28,7 +28,7 @@ void set_top_score(int64_t top_score)
         my_dputs("Failed to open top_score.txt\n", STDERR_FILENO);
         return;
     }
-    my_dprintf(fd, "%" PRId32, top_score);
+    my_dprintf(fd, "%" PRId64, top_score);
     close(fd);
 }
 

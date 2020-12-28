@@ -85,7 +85,7 @@ bool game_create(struct game *self, const struct arguments *args)
         !game_create_sound(&self->resources.sounds.foot2, "assets/foot2.wav") ||
         !game_create_sound(&self->resources.sounds.foot3, "assets/foot3.wav") ||
         !game_create_sound(&self->resources.sounds.foot4, "assets/foot4.wav") ||
-        !game_create_sound(&self->resources.sounds.foot1,
+        !game_create_sound(&self->resources.sounds.footc1,
             "assets/footc1.wav") ||
         !game_create_sound(&self->resources.sounds.footc2,
             "assets/footc2.wav") ||

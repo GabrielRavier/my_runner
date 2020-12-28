@@ -51,7 +51,9 @@ static void game_update_title(struct game *self)
 
 static void game_update_play(struct game *self)
 {
-    
+    struct game_object *i;
+    GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
+        i->update(i, self);
 }
 
 void game_update(struct game *self)

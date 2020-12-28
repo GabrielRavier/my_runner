@@ -24,7 +24,7 @@ BINARY_NAME := my_runner
 all: $(BINARY_NAME)
 
 # Sources for this project
-SOURCE_FILES := main game/change_music game/create/create game/create/window game/destroy game/draw/draw game/handle/key game/main_loop game/set/mode game/update/update parse_argv
+SOURCE_FILES := main game/change_music game/create/create game/create/window game/destroy game/draw/draw game/handle/key game/main_loop game/object/player game/object_vector game/set/mode game/update/update parse_argv random
 
 OBJECT_FILES := $(addprefix obj/, $(addsuffix .o, $(SOURCE_FILES)))
 
@@ -35,6 +35,7 @@ obj/%.o: src/%.c libmy
 	@mkdir --parents obj/game/create
 	@mkdir --parents obj/game/draw
 	@mkdir --parents obj/game/handle
+	@mkdir --parents obj/game/object
 	@mkdir --parents obj/game/set
 	@mkdir --parents obj/game/update
 	$(CC) -c $< -o $@ $(CFLAGS)

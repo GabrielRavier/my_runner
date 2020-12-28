@@ -7,10 +7,13 @@
 
 #pragma once
 
+#include "sounds.h"
 #include <SFML/Graphics/Types.h>
 
 struct game_resources {
     sfFont *nokia_font;
     sfTexture *title_text;
     sfTexture *title_background;
+    sfTexture *player;
+    struct game_sounds sounds;
 };

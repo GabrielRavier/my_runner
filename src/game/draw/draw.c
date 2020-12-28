@@ -25,7 +25,10 @@ static void game_draw_title(struct game *self)
 
 static void game_draw_play(struct game *self)
 {
-    
+    struct game_object *i;
+
+    GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
+        sfRenderWindow_drawSprite(self->window, i->sprite, NULL);
 }
 
 void game_draw(struct game *self)

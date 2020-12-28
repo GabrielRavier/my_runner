@@ -7,6 +7,9 @@
 
 #include "../create.h"
 #include "internal.h"
+#include "../object_vector.h"
+#include <SFML/Audio/Sound.h>
+#include <SFML/Audio/SoundBuffer.h>
 #include <SFML/Graphics/Font.h>
 #include <SFML/Graphics/RenderWindow.h>
 #include <SFML/Graphics/Sprite.h>
@@ -50,6 +53,19 @@ static bool game_create_sprite(sfSprite **sprite, sfTexture *texture)
     return (true);
 }
 
+static bool game_create_sound(struct sound_with_buffer *sound,
+    const char *filename)
+{
+    sound->buffer = sfSoundBuffer_createFromFile(filename);
+    if (sound->buffer == NULL)
+        return (false);
+    sound->sf_sound = sfSound_create();
+    if (sound->sf_sound == NULL)
+        return (false);
+    sfSound_setBuffer(sound->sf_sound, sound->buffer);
+    return (true);
+}
+
 bool game_create(struct game *self, const struct arguments *args)
 {
     if (!game_create_window(&self->window, args) ||
@@ -58,6 +74,25 @@ bool game_create(struct game *self, const struct arguments *args)
             "assets/title_background.png") ||
         !game_create_texture(&self->resources.title_text,
             "assets/title_text.png") ||
+        !game_create_texture(&self->resources.player, "assets/player.png") ||
+        !game_create_sound(&self->resources.sounds.jump1,
+            "assets/jump1.wav") ||
+        !game_create_sound(&self->resources.sounds.jump2,
+            "assets/jump2.wav") ||
+        !game_create_sound(&self->resources.sounds.jump3,
+            "assets/jump3.wav") ||
+        !game_create_sound(&self->resources.sounds.foot1, "assets/foot1.wav") ||
+        !game_create_sound(&self->resources.sounds.foot2, "assets/foot2.wav") ||
+        !game_create_sound(&self->resources.sounds.foot3, "assets/foot3.wav") ||
+        !game_create_sound(&self->resources.sounds.foot4, "assets/foot4.wav") ||
+        !game_create_sound(&self->resources.sounds.foot1,
+            "assets/footc1.wav") ||
+        !game_create_sound(&self->resources.sounds.footc2,
+            "assets/footc2.wav") ||
+        !game_create_sound(&self->resources.sounds.footc3,
+            "assets/footc3.wav") ||
+        !game_create_sound(&self->resources.sounds.footc4,
+            "assets/footc4.wav") ||
         !game_create_view(&self->state.camera, self->window) ||
         !game_create_text(&self->state.menu.proud_to_present_text, self) ||
         !game_create_text(&self->state.menu.press_to_start_text, self) ||
@@ -67,6 +102,7 @@ bool game_create(struct game *self, const struct arguments *args)
             self->resources.title_background))
         return (false);
     self->state.music = NULL;
+    game_object_vector_construct(&self->state.play.objects);
     sfText_setString(self->state.menu.proud_to_present_text,
         "Gabriel Ravier is pround to present a CSFML port of");
     sfText_setCharacterSize(self->state.menu.proud_to_present_text, 10);

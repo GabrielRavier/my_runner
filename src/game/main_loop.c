@@ -24,7 +24,7 @@ static void do_events(struct game *self)
 
     while (sfRenderWindow_pollEvent(self->window, &event)) {
         if (event.type == sfEvtClosed || (event.type == sfEvtKeyPressed &&
-            event.key.code == sfKeyQ))
+            event.key.code == sfKeyEscape))
             sfRenderWindow_close(self->window);
         if (event.type == sfEvtKeyPressed)
             game_handle_key(self, event.key.code);
@@ -54,7 +54,7 @@ void game_main_loop(struct game *self)
     int64_t elapsed_time = 0;
 
     MY_ASSERT(clock != NULL);
-    game_set_mode(self, GAME_MODE_MENU);
+    game_set_mode(self, GAME_MODE_TITLE);
     while (sfRenderWindow_isOpen(self->window)) {
         do_events(self);
         do_updates_until_all_dropped_frames_done(self, clock, &elapsed_time);

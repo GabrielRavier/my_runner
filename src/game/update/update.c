@@ -6,12 +6,14 @@
 */
 
 #include "../update.h"
+#include "my/assert.h"
 #include "my/macros.h"
 #include <SFML/Graphics/Color.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/View.h>
 #include <math.h>
+#include <stdbool.h>
 
 static void set_sprite_alpha(sfSprite *sprite, sfUint8 alpha)
 {
@@ -30,12 +32,12 @@ static void set_text_alpha(sfText *sprite, sfUint8 alpha)
 }
 
 // The camera panning stops after ~100 frames
-static void game_update_menu(struct game *self)
+static void game_update_title(struct game *self)
 {
     sfVector2f camera_center = {480 / 2, (320 / 2) - 10};
-    uintmax_t title_alpha = MY_CLAMP((intmax_t)(-200 +
+    uintmax_t title_alpha = MY_CLAMP((intmax_t)(-(100 * 2) +
         self->state.frames_since_mode_begin * 2), (intmax_t)0, (intmax_t)0xFF);
-    uintmax_t press_start_alpha = MY_CLAMP((intmax_t)(-200 - 0x80 +
+    uintmax_t press_start_alpha = MY_CLAMP((intmax_t)(-(100 * 2) - (0x100 / 2) +
         self->state.frames_since_mode_begin * 2), (intmax_t)0, (intmax_t)0xFF);
 
     camera_center.y += (100000.f /
@@ -47,9 +49,22 @@ static void game_update_menu(struct game *self)
     set_text_alpha(self->state.menu.press_to_start_text, press_start_alpha);
 }
 
+static void game_update_play(struct game *self)
+{
+    
+}
+
 void game_update(struct game *self)
 {
     ++self->state.frames_since_mode_begin;
-    if (self->state.mode == GAME_MODE_MENU)
-        game_update_menu(self);
+    switch (self->state.mode) {
+    case GAME_MODE_TITLE:
+        game_update_title(self);
+        break;
+    case GAME_MODE_PLAY:
+        game_update_play(self);
+        break;
+    default:
+        MY_ASSERT(false && "Invalid game mode");
+    }
 }

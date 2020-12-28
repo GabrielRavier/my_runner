@@ -15,4 +15,5 @@ void game_change_music(sfMusic **self, const char *music_name)
     *self = sfMusic_createFromFile(music_name);
     MY_ASSERT(*self != NULL);
     sfMusic_play(*self);
+    sfMusic_setLoop(*self, sfTrue);
 }

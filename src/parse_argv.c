@@ -24,7 +24,7 @@ static bool usage(const char *program_name)
         "\n"
         "Implements a small runner game based on Canabalt.\n"
         "Press X or C to jump/begin the game\n"
-        "Press Q to quit\n", program_name);
+        "Press Esc to quit\n", program_name);
     return (false);
 }
 

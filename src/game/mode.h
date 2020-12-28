@@ -8,6 +8,6 @@
 #pragma once
 
 enum game_mode {
-    GAME_MODE_MENU,
+    GAME_MODE_TITLE,
     GAME_MODE_PLAY
 };

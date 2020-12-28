@@ -29,7 +29,7 @@ SOURCE_FILES := main game/create/create game/create/window game/destroy game/dra
 OBJECT_FILES := $(addprefix obj/, $(addsuffix .o, $(SOURCE_FILES)))
 
 $(BINARY_NAME): libmy $(OBJECT_FILES)
-	$(CC) $(LDFLAGS) -o $@ $(OBJECT_FILES) -lmy -lcsfml-window -lcsfml-graphics -lcsfml-system
+	$(CC) $(LDFLAGS) -o $@ $(OBJECT_FILES) -lmy -lcsfml-window -lcsfml-graphics -lcsfml-system -lm
 
 obj/%.o: src/%.c libmy
 	@mkdir --parents obj/game/create

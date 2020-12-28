@@ -16,14 +16,15 @@ static bool usage(const char *program_name)
 {
     my_printf("Usage: %s [OPTION]...\n\n"
         "    -m MULTIPLIER multiplies the screen "
-        "width/height by this amount, by default this is 2, with a screen "
-        "size (before multiplication) of 960*315\n"
+        "width/height by this amount, by default this is 3, with a screen "
+        "size (before multiplication) of 480 * 320\n"
         "    -f FRAMERATE  sets the framerate to "
         "FRAMERATE fps\n"
         "    -h            display this help and exit\n"
         "\n"
         "Implements a small runner game based on Canabalt.\n"
-        "Press X or C to jump/begin the game\n", program_name);
+        "Press X or C to jump/begin the game\n"
+        "Press Q to quit\n", program_name);
     return (false);
 }
 

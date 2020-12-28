@@ -23,7 +23,8 @@ static void do_events(struct game *self)
     sfEvent event;
 
     while (sfRenderWindow_pollEvent(self->window, &event)) {
-        if (event.type == sfEvtClosed)
+        if (event.type == sfEvtClosed || (event.type == sfEvtKeyPressed &&
+            event.key.code == sfKeyQ))
             sfRenderWindow_close(self->window);
         if (event.type == sfEvtKeyPressed)
             game_handle_key(self, event.key.code);

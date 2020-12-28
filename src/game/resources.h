@@ -1,0 +1,16 @@
+/*
+** EPITECH PROJECT, 2020
+** myrunner
+** File description:
+** Declares game_resources
+*/
+
+#pragma once
+
+#include <SFML/Graphics/Types.h>
+
+struct game_resources {
+    sfFont *nokia_font;
+    sfTexture *title_text;
+    sfTexture *title_background;
+};

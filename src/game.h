@@ -8,10 +8,12 @@
 #pragma once
 
 #include "game/state.h"
+#include "game/resources.h"
 #include <SFML/Graphics/Types.h>
 
 // This is the main struct for the entire game
 struct game {
     sfRenderWindow *window;
+    struct game_resources resources;
     struct game_state state;
 };

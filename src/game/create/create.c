@@ -66,6 +66,7 @@ bool game_create(struct game *self, const struct arguments *args)
         !game_create_sprite(&self->state.menu.title_background,
             self->resources.title_background))
         return (false);
+    self->state.music = NULL;
     sfText_setString(self->state.menu.proud_to_present_text,
         "Gabriel Ravier is pround to present a CSFML port of");
     sfText_setCharacterSize(self->state.menu.proud_to_present_text, 10);

@@ -24,12 +24,12 @@ BINARY_NAME := my_runner
 all: $(BINARY_NAME)
 
 # Sources for this project
-SOURCE_FILES := main game/create/create game/create/window game/destroy game/draw/draw game/handle/key game/main_loop game/set/mode game/update/update parse_argv
+SOURCE_FILES := main game/change_music game/create/create game/create/window game/destroy game/draw/draw game/handle/key game/main_loop game/set/mode game/update/update parse_argv
 
 OBJECT_FILES := $(addprefix obj/, $(addsuffix .o, $(SOURCE_FILES)))
 
 $(BINARY_NAME): libmy $(OBJECT_FILES)
-	$(CC) $(LDFLAGS) -o $@ $(OBJECT_FILES) -lmy -lcsfml-window -lcsfml-graphics -lcsfml-system -lm
+	$(CC) $(LDFLAGS) -o $@ $(OBJECT_FILES) -lmy -lcsfml-window -lcsfml-graphics -lcsfml-system -lcsfml-audio -lm
 
 obj/%.o: src/%.c libmy
 	@mkdir --parents obj/game/create

@@ -43,7 +43,7 @@ int64_t get_top_score(void)
         return DEFAULT_SCORE;
     bytes_read = fread(buffer, 1, MOST_CHARS_SCORE, score_file);
     buffer[bytes_read] = '\0';
-    result = my_strtol_base_str(buffer, NULL, "0123456789");
+    result = my_strtol(buffer, NULL, 10);
     fclose(score_file);
     return result;
 }

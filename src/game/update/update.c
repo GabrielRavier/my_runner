@@ -52,8 +52,13 @@ static void game_update_title(struct game *self)
 static void game_update_play(struct game *self)
 {
     struct game_object *i;
+    sfVector2f player_position;
+
     GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
         i->update(i, self);
+    player_position = sfSprite_getPosition(self->state.play.player_sprite);
+    player_position.x += 200;
+    sfView_setCenter(self->state.camera, player_position);
 }
 
 void game_update(struct game *self)

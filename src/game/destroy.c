@@ -32,6 +32,7 @@ void game_destroy(struct game *self)
     sfText_destroy(self->state.menu.press_to_start_text);
     sfText_destroy(self->state.menu.proud_to_present_text);
     sfView_destroy(self->state.camera);
+    destroy_sound_with_buffer(&self->resources.sounds.wall);
     destroy_sound_with_buffer(&self->resources.sounds.footc4);
     destroy_sound_with_buffer(&self->resources.sounds.footc3);
     destroy_sound_with_buffer(&self->resources.sounds.footc2);

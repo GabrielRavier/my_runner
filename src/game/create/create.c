@@ -93,6 +93,7 @@ bool game_create(struct game *self, const struct arguments *args)
             "assets/footc3.wav") ||
         !game_create_sound(&self->resources.sounds.footc4,
             "assets/footc4.wav") ||
+        !game_create_sound(&self->resources.sounds.wall, "assets/wall.wav") ||
         !game_create_view(&self->state.camera, self->window) ||
         !game_create_text(&self->state.menu.proud_to_present_text, self) ||
         !game_create_text(&self->state.menu.press_to_start_text, self) ||

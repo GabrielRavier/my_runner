@@ -11,8 +11,10 @@
 #include "my/assert.h"
 #include "my/macros.h"
 #include <SFML/Audio/Sound.h>
+#include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Window/Keyboard.h>
+#include <math.h>
 #include <stdlib.h>
 #include <stddef.h>
 
@@ -29,9 +31,11 @@ struct player_data {
     bool on_floor;
     sfVector2f acceleration;
     sfVector2f velocity;
+    sfVector2f max_velocity;
+    const char *epitath;
 };
 
-static const sfVector2f MAX_VELOCITY = {.x = 10.f, .y = 3.6f};
+static const sfVector2f DEFAULT_MAX_VELOCITY = {.x = 10.f, .y = 3.6f};
 
 static float get_acceleration_x(float velocity_x)
 {
@@ -97,14 +101,87 @@ static void do_fall_animation(struct game_object *player, struct game *game)
     sfSprite_setTextureRect(player->sprite, player_rect);
 }
 
-static void apply_velocity(struct game_object *player)
+// y is the point outside the rectangle, x is the point inside of it
+static float get_t(const sfFloatRect *rectangle,
+    const sfVector2f *y, const sfVector2f *x)
+{
+    sfVector2f a = {rectangle->left, rectangle->top + rectangle->height};
+    sfVector2f c = {rectangle->left + rectangle->width, rectangle->top};
+
+    if (y->x == x->x)
+        return (MY_MAX((a.y - x->y) / (y->y - x->y), (c.y - x->y) / (y->y -
+            x->y)));
+    if (y->y == x->y)
+        return (MY_MAX((a.x - x->x) / (y->x - x->x), (c.x - x->x) / (y->x -
+            x->x)));
+    if (y->x > x->x) {
+        if (y->y > x->y)
+            return (MY_MIN((c.x - x->x) / (y->x - x->x), (c.y - x->y) / (y->y -
+                x->y)));
+        return (MY_MIN((c.x - x->x) / (y->x - x->x), (a.y - x->y) / (y->y -
+            x->y)));
+    }
+    if (y->y > x->y)
+        return (MY_MIN((a.x - x->x) / (y->x - x->x), (c.y - x->y) / (y->y -
+            x->y)));
+    return (MY_MIN((a.x - x->x) / (y->x - x->x), (a.y - x->y) / (y->y - x->y)));
+}
+
+static sfVector2f do_intersection_point(const sfFloatRect *rectangle,
+    const sfVector2f *pos_outside, const sfVector2f *pos_inside)
+{
+    float t = get_t(rectangle, pos_outside, pos_inside);
+
+    return (sfVector2f){
+        t * pos_outside->x + (1 - t) * pos_inside->x,
+        t * pos_outside->y + (1 - t) * pos_inside->y
+    };
+}
+
+static void do_bottom_collision(struct game_object *player,
+    MY_ATTR_UNUSED struct game *game)
+{
+    __auto_type data = (struct player_data *)player->private_data;
+
+    if (data->my > .16f)
+        data->stumble = true;
+    if (!is_jumping())
+        data->jump = .0f;
+    data->my = .0f;
+}
+
+static void do_left_collision(struct game_object *player, struct game *game)
+{
+    __auto_type data = (struct player_data *)player->private_data;
+
+    sfSound_play(game->resources.sounds.wall.sf_sound);
+    data->acceleration.x = 0;
+    data->velocity.x = 0;
+    data->max_velocity.y = 1000;
+    data->epitath = "hit";
+}
+
+static void apply_velocity(struct game_object *player, struct game *game)
 {
     __auto_type data = (struct player_data *)player->private_data;
     sfVector2f position = sfSprite_getPosition(player->sprite);
+    sfVector2f position_after = {position.x + data->velocity.x,
+        position.y + data->velocity.y};
+    struct game_object *i;
+    sfFloatRect i_rect;
 
-    position.x += data->velocity.x;
-    position.y += data->velocity.y;
-    sfSprite_setPosition(player->sprite, position);
+    GAME_OBJECT_VECTOR_FOR_EACH(&game->state.play.objects, i)
+        if (i != player) {
+            i_rect = sfSprite_getGlobalBounds(i->sprite);
+            if (sfFloatRect_contains(&i_rect, position_after.x,
+                position_after.y)) {
+                position_after = do_intersection_point(&i_rect, &position,
+                    &position_after);
+                (position_after.y == i_rect.top ? &do_bottom_collision :
+                    &do_left_collision)(player, game);
+            }
+        }
+    sfSprite_setPosition(player->sprite, position_after);
 }
 
 static void do_update(struct game_object *player, struct game *game)
@@ -121,7 +198,7 @@ static void do_update(struct game_object *player, struct game *game)
         data->velocity.x = 0;
     else
         data->acceleration.x = get_acceleration_x(data->velocity.x);
-    data->jump_limit = MY_MIN(data->velocity.x / (MAX_VELOCITY.x * 2.5f),
+    data->jump_limit = MY_MIN(data->velocity.x / (data->max_velocity.x * 2.5f),
         0.35f);
     if (data->jump >= 0 && is_jumping()) {
         if (data->jump == 0) {
@@ -144,11 +221,12 @@ static void do_update(struct game_object *player, struct game *game)
         data->jump = -1;
     if (data->jump > 0) {
         data->crane_feet = false;
-        data->velocity.y = (data->jump < .08f) ? -MAX_VELOCITY.y * .65f :
-            -MAX_VELOCITY.y;
+        data->velocity.y = (data->jump < .08f) ? -data->max_velocity.y * .65f :
+            -data->max_velocity.y;
     }
     if (data->on_floor) {
-        data->ft = MY_MAX((1 - data->velocity.x / MAX_VELOCITY.x) * .35f, .15f);
+        data->ft = MY_MAX((1 - data->velocity.x / data->max_velocity.x) * .35f,
+            .15f);
         data->fc += 1.f / 60.f;
         if (data->fc > data->ft) {
             data->fc = 0;
@@ -185,13 +263,13 @@ static void do_update(struct game_object *player, struct game *game)
         do_fall_animation(player, game);
         data->stumble = false;
     }
-    if (data->velocity.y == MAX_VELOCITY.y)
+    if (data->velocity.y == data->max_velocity.y)
         data->my += 1.f / 60.f;
     data->velocity.x = MY_CLAMP(data->velocity.x + data->acceleration.x,
-        -MAX_VELOCITY.x, MAX_VELOCITY.x);
+        -data->max_velocity.x, data->max_velocity.x);
     data->velocity.y = MY_CLAMP(data->velocity.y + data->acceleration.y,
-        -MAX_VELOCITY.y, MAX_VELOCITY.y);
-    apply_velocity(player);
+        -data->max_velocity.y, data->max_velocity.y);
+    apply_velocity(player, game);
 }
 
 struct game_object game_object_player_create(struct game_resources *resources)
@@ -202,6 +280,7 @@ struct game_object game_object_player_create(struct game_resources *resources)
     *data = (struct player_data){0};
     data->acceleration = (sfVector2f){.01f, 12.f};
     data->velocity.x = 1.25f;
+    data->max_velocity = DEFAULT_MAX_VELOCITY;
     result.private_data = data;
     result.update = &do_update;
     result.sprite = sfSprite_create();

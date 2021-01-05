@@ -74,6 +74,10 @@ bool game_create(struct game *self, const struct arguments *args)
             "assets/title_background.png") ||
         !game_create_texture(&self->resources.title_text,
             "assets/title_text.png") ||
+        !game_create_texture(&self->resources.background,
+            "assets/background.png") ||
+        !game_create_texture(&self->resources.midground,
+            "assets/midground.png") ||
         !game_create_texture(&self->resources.player, "assets/player.png") ||
         !game_create_sound(&self->resources.sounds.jump1,
             "assets/jump1.wav") ||
@@ -95,28 +99,40 @@ bool game_create(struct game *self, const struct arguments *args)
             "assets/footc4.wav") ||
         !game_create_sound(&self->resources.sounds.wall, "assets/wall.wav") ||
         !game_create_view(&self->state.camera, self->window) ||
-        !game_create_text(&self->state.menu.proud_to_present_text, self) ||
-        !game_create_text(&self->state.menu.press_to_start_text, self) ||
-        !game_create_sprite(&self->state.menu.title_text_sprite,
+        !game_create_view(&self->state.play.midground_view, self->window) ||
+        !game_create_view(&self->state.play.background_view, self->window) ||
+        !game_create_text(&self->state.title.proud_to_present_text, self) ||
+        !game_create_text(&self->state.title.press_to_start_text, self) ||
+        !game_create_sprite(&self->state.title.title_text_sprite,
             self->resources.title_text) ||
-        !game_create_sprite(&self->state.menu.title_background,
-            self->resources.title_background))
+        !game_create_sprite(&self->state.title.title_background,
+            self->resources.title_background) ||
+        !game_create_sprite(&self->state.play.background,
+            self->resources.background) ||
+        !game_create_sprite(&self->state.play.midground,
+            self->resources.midground))
         return (false);
     self->state.music = NULL;
     game_object_vector_construct(&self->state.play.objects);
-    sfText_setString(self->state.menu.proud_to_present_text,
+    sfTexture_setRepeated(self->resources.background, sfTrue);
+    sfTexture_setRepeated(self->resources.midground, sfTrue);
+    sfView_setSize(self->state.play.background_view, (sfVector2f){1000.f, 1000.f});
+    sfView_setSize(self->state.play.midground_view, (sfVector2f){500.f, 500.f});
+    sfText_setString(self->state.title.proud_to_present_text,
         "Gabriel Ravier is pround to present a CSFML port of");
-    sfText_setCharacterSize(self->state.menu.proud_to_present_text, 10);
-    sfText_setPosition(self->state.menu.proud_to_present_text,
+    sfText_setCharacterSize(self->state.title.proud_to_present_text, 10);
+    sfText_setPosition(self->state.title.proud_to_present_text,
         (sfVector2f){80, 10});
-    sfText_setFillColor(self->state.menu.proud_to_present_text,
+    sfText_setFillColor(self->state.title.proud_to_present_text,
         sfColor_fromRGB(134, 134, 150));
-    sfText_setString(self->state.menu.press_to_start_text,
+    sfText_setString(self->state.title.press_to_start_text,
         "Press X or C to start your daring escape.");
-    sfText_setCharacterSize(self->state.menu.press_to_start_text, 10);
-    sfText_setPosition(self->state.menu.press_to_start_text,
+    sfText_setCharacterSize(self->state.title.press_to_start_text, 10);
+    sfText_setPosition(self->state.title.press_to_start_text,
         (sfVector2f){230, 305});
-    sfSprite_setPosition(self->state.menu.title_text_sprite,
+    sfSprite_setPosition(self->state.title.title_text_sprite,
         (sfVector2f){40, 30});
+    sfSprite_setScale(self->state.play.background, (sfVector2f){3, 3});
+    sfSprite_setScale(self->state.play.midground, (sfVector2f){3, 3});
     return (true);
 }

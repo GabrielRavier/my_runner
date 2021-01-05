@@ -15,5 +15,7 @@ struct game_resources {
     sfTexture *title_text;
     sfTexture *title_background;
     sfTexture *player;
+    sfTexture *background;
+    sfTexture *midground;
     struct game_sounds sounds;
 };

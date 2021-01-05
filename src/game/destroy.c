@@ -27,10 +27,14 @@ void game_destroy(struct game *self)
 {
     sfMusic_destroy(self->state.music);
     game_object_vector_destroy(&self->state.play.objects);
-    sfSprite_destroy(self->state.menu.title_background);
-    sfSprite_destroy(self->state.menu.title_text_sprite);
-    sfText_destroy(self->state.menu.press_to_start_text);
-    sfText_destroy(self->state.menu.proud_to_present_text);
+    sfSprite_destroy(self->state.play.midground);
+    sfSprite_destroy(self->state.play.background);
+    sfView_destroy(self->state.play.midground_view);
+    sfView_destroy(self->state.play.background_view);
+    sfSprite_destroy(self->state.title.title_background);
+    sfSprite_destroy(self->state.title.title_text_sprite);
+    sfText_destroy(self->state.title.press_to_start_text);
+    sfText_destroy(self->state.title.proud_to_present_text);
     sfView_destroy(self->state.camera);
     destroy_sound_with_buffer(&self->resources.sounds.wall);
     destroy_sound_with_buffer(&self->resources.sounds.footc4);
@@ -44,6 +48,8 @@ void game_destroy(struct game *self)
     destroy_sound_with_buffer(&self->resources.sounds.jump3);
     destroy_sound_with_buffer(&self->resources.sounds.jump2);
     destroy_sound_with_buffer(&self->resources.sounds.jump1);
+    sfTexture_destroy(self->resources.midground);
+    sfTexture_destroy(self->resources.background);
     sfTexture_destroy(self->resources.player);
     sfTexture_destroy(self->resources.title_text);
     sfTexture_destroy(self->resources.title_background);

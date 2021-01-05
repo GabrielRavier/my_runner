@@ -188,7 +188,7 @@ static void do_update(struct game_object *player, struct game *game)
 {
     __auto_type data = (struct player_data *)player->private_data;
 
-    if (sfSprite_getPosition(player->sprite).y > 484) {
+    if (sfSprite_getPosition(player->sprite).y > 465) {
         data->is_dead = true;
         return;
     }

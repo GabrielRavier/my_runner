@@ -13,6 +13,7 @@
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/View.h>
 #include <math.h>
+#include <limits.h>
 #include <stdbool.h>
 
 static void set_sprite_alpha(sfSprite *sprite, sfUint8 alpha)
@@ -44,9 +45,25 @@ static void game_update_title(struct game *self)
         (powf(self->state.frames_since_mode_begin + 10, 2)));
     camera_center.y = MY_MAX(camera_center.y, (320 / 2));
     sfView_setCenter(self->state.camera, camera_center);
-    set_sprite_alpha(self->state.menu.title_text_sprite, title_alpha);
-    set_text_alpha(self->state.menu.proud_to_present_text, title_alpha);
-    set_text_alpha(self->state.menu.press_to_start_text, press_start_alpha);
+    set_sprite_alpha(self->state.title.title_text_sprite, title_alpha);
+    set_text_alpha(self->state.title.proud_to_present_text, title_alpha);
+    set_text_alpha(self->state.title.press_to_start_text, press_start_alpha);
+}
+
+static void game_update_play_background(struct game *self)
+{
+    sfVector2f player_position = sfView_getCenter(self->state.camera);
+    sfIntRect background_rect =
+        sfSprite_getTextureRect(self->state.play.background);
+    sfIntRect midground_rect =
+        sfSprite_getTextureRect(self->state.play.midground);
+
+    background_rect.left += player_position.x / 2000;
+    midground_rect.left += player_position.x / 2000;
+    background_rect.width = INT_MAX / 1000;
+    midground_rect.width = INT_MAX / 1000;
+    sfSprite_setTextureRect(self->state.play.background, background_rect);
+    sfSprite_setTextureRect(self->state.play.midground, background_rect);
 }
 
 static void game_update_play(struct game *self)
@@ -59,6 +76,9 @@ static void game_update_play(struct game *self)
     player_position = sfSprite_getPosition(self->state.play.player_sprite);
     player_position.x += 200;
     sfView_setCenter(self->state.camera, player_position);
+    sfView_setCenter(self->state.play.background_view, player_position);
+    sfView_setCenter(self->state.play.midground_view, player_position);
+    game_update_play_background(self);
 }
 
 void game_update(struct game *self)

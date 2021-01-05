@@ -13,13 +13,13 @@
 static void game_draw_title(struct game *self)
 {
     sfRenderWindow_clear(self->window, sfColor_fromRGB(53, 53, 61));
-    sfRenderWindow_drawSprite(self->window, self->state.menu.title_background,
+    sfRenderWindow_drawSprite(self->window, self->state.title.title_background,
         NULL);
-    sfRenderWindow_drawSprite(self->window, self->state.menu.title_text_sprite,
+    sfRenderWindow_drawSprite(self->window, self->state.title.title_text_sprite,
         NULL);
     sfRenderWindow_drawText(self->window,
-        self->state.menu.proud_to_present_text, NULL);
-    sfRenderWindow_drawText(self->window, self->state.menu.press_to_start_text,
+        self->state.title.proud_to_present_text, NULL);
+    sfRenderWindow_drawText(self->window, self->state.title.press_to_start_text,
         NULL);
 }
 
@@ -27,6 +27,12 @@ static void game_draw_play(struct game *self)
 {
     struct game_object *i;
 
+    sfRenderWindow_clear(self->window, sfColor_fromRGB(176, 176, 191));
+    sfRenderWindow_setView(self->window, self->state.play.background_view);
+    sfRenderWindow_drawSprite(self->window, self->state.play.background, NULL);
+    sfRenderWindow_setView(self->window, self->state.play.midground_view);
+    sfRenderWindow_drawSprite(self->window, self->state.play.midground, NULL);
+    sfRenderWindow_setView(self->window, self->state.camera);
     GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
         sfRenderWindow_drawSprite(self->window, i->sprite, NULL);
 }

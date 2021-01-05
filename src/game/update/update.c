@@ -55,13 +55,9 @@ static void game_update_play_background(struct game *self)
     sfVector2f player_position = sfView_getCenter(self->state.camera);
     sfIntRect background_rect =
         sfSprite_getTextureRect(self->state.play.background);
-    sfIntRect midground_rect =
-        sfSprite_getTextureRect(self->state.play.midground);
 
-    background_rect.left += player_position.x / 2000;
-    midground_rect.left += player_position.x / 2000;
+    background_rect.left = (player_position.x / 2000) - 10000;
     background_rect.width = INT_MAX / 1000;
-    midground_rect.width = INT_MAX / 1000;
     sfSprite_setTextureRect(self->state.play.background, background_rect);
     sfSprite_setTextureRect(self->state.play.midground, background_rect);
 }
@@ -75,6 +71,7 @@ static void game_update_play(struct game *self)
         i->update(i, self);
     player_position = sfSprite_getPosition(self->state.play.player_sprite);
     player_position.x += 200;
+    player_position.y = MY_MIN(player_position.y, 300);
     sfView_setCenter(self->state.camera, player_position);
     sfView_setCenter(self->state.play.background_view, player_position);
     sfView_setCenter(self->state.play.midground_view, player_position);

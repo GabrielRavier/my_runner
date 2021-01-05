@@ -59,7 +59,7 @@ static void do_jump_animation(struct game_object *player, struct game *game)
     if (game->state.frames_since_mode_begin % 15)
         return;
     player_rect.left = real_offset % 570;
-    player_rect.top = (real_offset / 570) * 30;
+    player_rect.top = (real_offset / 570) * 30 + 6;
     if (MY_CLAMP(real_offset, 486 + 30, 570 + 25) != real_offset &&
         real_offset != 487 + 120)
         player_rect = (sfIntRect){487, 6, 503 - 487, 29 - 6};
@@ -77,7 +77,7 @@ static void do_run_animation(struct game_object *player, struct game *game)
         data->velocity.x < 300 ? 2 : data->velocity.x < 550 ? 1 : 2))
         return;
     player_rect.left = real_offset % 570;
-    player_rect.top = (real_offset / 570) * 30;
+    player_rect.top = (real_offset / 570) * 30 + 6;
     if (MY_CLAMP(real_offset, 6 + 30, 495) != real_offset)
         player_rect = (sfIntRect){7, 6, 24 - 7, 29 - 6};
     sfSprite_setTextureRect(player->sprite, player_rect);
@@ -91,7 +91,7 @@ static void do_fall_animation(struct game_object *player, struct game *game)
     if (game->state.frames_since_mode_begin % 4)
         return;
     player_rect.left = real_offset % 570;
-    player_rect.top = (real_offset / 570) * 30;
+    player_rect.top = (real_offset / 570) * 30 + 6;
     if (MY_CLAMP(real_offset, 570 + 35, 570 + 225) != real_offset)
         player_rect = (sfIntRect){36, 36, 54 - 36, 60 - 36};
     sfSprite_setTextureRect(player->sprite, player_rect);

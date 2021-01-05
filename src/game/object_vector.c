@@ -56,10 +56,11 @@ void game_object_vector_clear(struct game_object_vector *self)
     self->size = 0;
 }
 
-void game_object_vector_push_back(struct game_object_vector *self,
+size_t game_object_vector_push_back(struct game_object_vector *self,
     const struct game_object *object)
 {
     game_object_vector_guarantee_can_expand(self, 1);
     self->array[self->size] = *object;
     ++self->size;
+    return (self->size - 1);
 }

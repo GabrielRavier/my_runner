@@ -19,7 +19,7 @@ struct game_object_vector {
 void game_object_vector_construct(struct game_object_vector *self);
 void game_object_vector_destroy(struct game_object_vector *self);
 void game_object_vector_clear(struct game_object_vector *self);
-void game_object_vector_push_back(struct game_object_vector *self,
+size_t game_object_vector_push_back(struct game_object_vector *self,
     const struct game_object *object);
 
 #define GAME_OBJECT_VECTOR_FOR_EACH(vector, i) for ((i) = (vector)->array; (i) \

@@ -16,6 +16,7 @@
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/Texture.h>
 #include <SFML/Graphics/View.h>
+#include <stdlib.h>
 
 static void destroy_sound_with_buffer(struct sound_with_buffer *sound)
 {
@@ -27,6 +28,8 @@ void game_destroy(struct game *self)
 {
     sfMusic_destroy(self->state.music);
     game_object_vector_destroy(&self->state.play.objects);
+    free(self->state.play.player.private_data);
+    sfSprite_destroy(self->state.play.player.sprite);
     sfSprite_destroy(self->state.play.midground);
     sfSprite_destroy(self->state.play.background);
     sfView_destroy(self->state.play.midground_view);

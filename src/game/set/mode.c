@@ -14,12 +14,9 @@
 
 static void game_set_mode_init_play(struct game *self)
 {
-    __auto_type player = game_object_player_create(&self->resources);
-
+    self->state.play.player = game_object_player_create(&self->resources);
+    sfSprite_setTextureRect(self->state.play.player.sprite, (sfIntRect){0});
     game_object_vector_clear(&self->state.play.objects);
-    game_object_vector_push_back(&self->state.play.objects, &player);
-    self->state.play.player_sprite = player.sprite;
-    sfSprite_setTextureRect(player.sprite, (sfIntRect){0});
 }
 
 void game_set_mode(struct game *self, enum game_mode mode)

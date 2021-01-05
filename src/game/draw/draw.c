@@ -35,6 +35,7 @@ static void game_draw_play(struct game *self)
     sfRenderWindow_setView(self->window, self->state.camera);
     GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
         sfRenderWindow_drawSprite(self->window, i->sprite, NULL);
+    sfRenderWindow_drawSprite(self->window, self->state.play.player.sprite, NULL);
 }
 
 void game_draw(struct game *self)

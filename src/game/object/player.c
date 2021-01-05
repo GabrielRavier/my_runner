@@ -170,17 +170,16 @@ static void apply_velocity(struct game_object *player, struct game *game)
     struct game_object *i;
     sfFloatRect i_rect;
 
-    GAME_OBJECT_VECTOR_FOR_EACH(&game->state.play.objects, i)
-        if (i != player) {
-            i_rect = sfSprite_getGlobalBounds(i->sprite);
-            if (sfFloatRect_contains(&i_rect, position_after.x,
-                position_after.y)) {
-                position_after = do_intersection_point(&i_rect, &position,
-                    &position_after);
-                (position_after.y == i_rect.top ? &do_bottom_collision :
-                    &do_left_collision)(player, game);
-            }
+    GAME_OBJECT_VECTOR_FOR_EACH(&game->state.play.objects, i) {
+        i_rect = sfSprite_getGlobalBounds(i->sprite);
+        if (sfFloatRect_contains(&i_rect, position_after.x,
+            position_after.y)) {
+            position_after = do_intersection_point(&i_rect, &position,
+                &position_after);
+            (position_after.y == i_rect.top ? &do_bottom_collision :
+                &do_left_collision)(player, game);
         }
+    }
     sfSprite_setPosition(player->sprite, position_after);
 }
 

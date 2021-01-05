@@ -69,7 +69,8 @@ static void game_update_play(struct game *self)
 
     GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
         i->update(i, self);
-    player_position = sfSprite_getPosition(self->state.play.player_sprite);
+    self->state.play.player.update(&self->state.play.player, self);
+    player_position = sfSprite_getPosition(self->state.play.player.sprite);
     player_position.x += 200;
     player_position.y = MY_MIN(player_position.y, 300);
     sfView_setCenter(self->state.camera, player_position);

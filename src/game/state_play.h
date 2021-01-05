@@ -11,7 +11,7 @@
 
 struct game_state_play {
     struct game_object_vector objects;
-    sfSprite *player_sprite;
+    struct game_object player;
     sfSprite *midground;
     sfView *midground_view;
     sfSprite *background;

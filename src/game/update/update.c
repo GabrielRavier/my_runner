@@ -7,7 +7,7 @@
 
 #include "../update.h"
 #include "../../random.h"
-#include "../object/building_rect.h"
+#include "../object/building_bottom.h"
 #include "my/assert.h"
 #include "my/macros.h"
 #include <SFML/Graphics/Color.h>
@@ -54,14 +54,18 @@ static void game_update_title(struct game *self)
 
 static void game_update_play_background(struct game *self)
 {
-    sfVector2f player_position = sfView_getCenter(self->state.camera);
+    sfVector2f player_position =
+        sfSprite_getPosition(self->state.play.player.sprite);
     sfIntRect background_rect =
         sfSprite_getTextureRect(self->state.play.background);
+    sfVector2f background_position = {((int)player_position.x / (512 * 3) - 5)
+        * (512 * 3), 0};
 
-    background_rect.left = (player_position.x / 2000) - 10000;
-    background_rect.width = INT_MAX / 1000;
+    background_rect.width = 5000;
     sfSprite_setTextureRect(self->state.play.background, background_rect);
     sfSprite_setTextureRect(self->state.play.midground, background_rect);
+    sfSprite_setPosition(self->state.play.background, background_position);
+    sfSprite_setPosition(self->state.play.midground, background_position);
 }
 
 static int get_hallway_height(struct game *self)
@@ -81,7 +85,7 @@ static int get_hallway_height(struct game *self)
 
 static int get_gap(struct game *self)
 {
-    float max_gap = ((self->state.play.player.velocity.x * .75f) / 20.f) * .75f;
+    float max_gap = ((self->state.play.player.velocity.x * 75.f) / 20.f) * .75f;
 
     return (random_float_between(MY_MAX(max_gap * .4f, 4.f), MY_MAX(max_gap, 4.f)));
 }
@@ -102,7 +106,9 @@ static float get_width(struct game *self, float gap)
 static void game_update_play_sequence(struct game_state_play_sequence *self,
     struct game *game)
 {
-    enum sequence_object_type type = SEQUENCE_OBJECT_TYPE_HALLWAY;
+    enum sequence_object_type type =
+        random_int_between(SEQUENCE_OBJECT_TYPE_FIRST,
+        SEQUENCE_OBJECT_TYPE_LAST);
     float gap;
     float drop;
     float max_j;
@@ -123,6 +129,7 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
         self->position.y = 240;
         self->width = 42 * 16;
         self->height = 480 - 240;
+        type = SEQUENCE_OBJECT_TYPE_ROOF;
     }
     if (type == SEQUENCE_OBJECT_TYPE_HALLWAY)
         hallway_height = get_hallway_height(game);
@@ -140,11 +147,15 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
             --drop;
         self->position.x += self->width + gap * 16;
         self->position.y += drop * 16;
+        self->position.y = MY_CLAMP(self->position.y, 0, 480);
         self->height = 480 - self->position.y;
         self->width = get_width(game, gap);
     }
-    __auto_type building = game_object_create_building_rect(self);
-    game_object_vector_push_back(&game->state.play.objects, &building);
+    if (type == SEQUENCE_OBJECT_TYPE_HALLWAY ||
+        type == SEQUENCE_OBJECT_TYPE_ROOF) {
+        __auto_type building_bottom = game_object_create_building_bottom(self);
+        game_object_vector_push_back(&game->state.play.objects, &building_bottom);
+    }
     ++self->current_index;
 }
 

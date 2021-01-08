@@ -117,7 +117,7 @@ static void apply_velocity(struct game_player *player, struct game *game)
                 player->velocity.y = 0;
             } else if (player->velocity.x > 0 && position.x < i->rect.left) {
                 do_left_collision(player, game);
-                position_after.x -= intersection.width;
+                position_after.x -= intersection.width + 2.f;
                 player->velocity.x = 0;
             } else if (player->velocity.y < 0 && position.y >
                 i->rect.top + i->rect.height) {
@@ -129,6 +129,16 @@ static void apply_velocity(struct game_player *player, struct game *game)
     sfSprite_setPosition(player->sprite, position_after);
 }
 
+static void apply_acceleration_and_velocity(struct game_player *player,
+    struct game *game)
+{
+    player->velocity.x = MY_CLAMP(player->velocity.x + player->acceleration.x,
+        -player->max_velocity.x, player->max_velocity.x);
+    player->velocity.y = MY_CLAMP(player->velocity.y + player->acceleration.y,
+        -player->max_velocity.y, player->max_velocity.y);
+    apply_velocity(player, game);
+}
+
 void game_player_update(struct game_player *player, struct game *game)
 {
     if (sfSprite_getPosition(player->sprite).y > 484) {
@@ -137,7 +147,7 @@ void game_player_update(struct game_player *player, struct game *game)
     }
     if (player->velocity.x < 0)
         player->velocity.x = 0;
-    else
+    else if (player->acceleration.x > 0)
         player->acceleration.x = get_acceleration_x(player->velocity.x);
     player->jump_limit = MY_MIN(player->velocity.x / (player->max_velocity.x *
         2.5f), 0.35f);
@@ -191,11 +201,7 @@ void game_player_update(struct game_player *player, struct game *game)
         do_jump_animation(player, game);
     else
         do_fall_animation(player, game);
-    player->velocity.x = MY_CLAMP(player->velocity.x + player->acceleration.x,
-        -player->max_velocity.x, player->max_velocity.x);
-    player->velocity.y = MY_CLAMP(player->velocity.y + player->acceleration.y,
-        -player->max_velocity.y, player->max_velocity.y);
-    apply_velocity(player, game);
+    apply_acceleration_and_velocity(player, game);
 }
 
 struct game_player game_player_create(struct game_resources *resources)

@@ -10,5 +10,5 @@
 #include "../object.h"
 #include "../state_play_sequence.h"
 
-struct game_object game_object_create_building_rect(
+struct game_object game_object_create_building_bottom(
     struct game_state_play_sequence *sequence);

@@ -111,7 +111,7 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     if (self->position.x + self->width >
         sfSprite_getPosition(game->state.play.player.sprite).x + 480)
         return;
-    if (self->current_index == 0 || true) {
+    if (self->current_index == 0) {
         self->position.x = -60;
         self->position.y = 90;
         self->width = 900;

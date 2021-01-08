@@ -83,43 +83,6 @@ static void do_fall_animation(struct game_player *player, struct game *game)
     sfSprite_setTextureRect(player->sprite, player_rect);
 }
 
-// y is the point outside the rectangle, x is the point inside of it
-static float get_t(const sfFloatRect *rectangle,
-    const sfVector2f *y, const sfVector2f *x)
-{
-    sfVector2f a = {rectangle->left, rectangle->top + rectangle->height};
-    sfVector2f c = {rectangle->left + rectangle->width, rectangle->top};
-
-    if (y->x == x->x)
-        return (MY_MAX((a.y - x->y) / (y->y - x->y), (c.y - x->y) / (y->y -
-            x->y)));
-    if (y->y == x->y)
-        return (MY_MAX((a.x - x->x) / (y->x - x->x), (c.x - x->x) / (y->x -
-            x->x)));
-    if (y->x > x->x) {
-        if (y->y > x->y)
-            return (MY_MIN((c.x - x->x) / (y->x - x->x), (c.y - x->y) / (y->y -
-                x->y)));
-        return (MY_MIN((c.x - x->x) / (y->x - x->x), (a.y - x->y) / (y->y -
-            x->y)));
-    }
-    if (y->y > x->y)
-        return (MY_MIN((a.x - x->x) / (y->x - x->x), (c.y - x->y) / (y->y -
-            x->y)));
-    return (MY_MIN((a.x - x->x) / (y->x - x->x), (a.y - x->y) / (y->y - x->y)));
-}
-
-static sfVector2f do_intersection_point(const sfFloatRect *rectangle,
-    const sfVector2f *pos_outside, const sfVector2f *pos_inside)
-{
-    float t = get_t(rectangle, pos_outside, pos_inside);
-
-    return (sfVector2f){
-        t * pos_outside->x + (1 - t) * pos_inside->x,
-        t * pos_outside->y + (1 - t) * pos_inside->y
-    };
-}
-
 static void do_bottom_collision(struct game_player *player,
     MY_ATTR_UNUSED struct game *game)
 {
@@ -128,6 +91,7 @@ static void do_bottom_collision(struct game_player *player,
     if (!is_jumping())
         player->jump = .0f;
     player->my = .0f;
+    player->on_floor = true;
 }
 
 static void do_left_collision(struct game_player *player, struct game *game)
@@ -144,20 +108,25 @@ static void apply_velocity(struct game_player *player, struct game *game)
     sfVector2f position = sfSprite_getPosition(player->sprite);
     sfVector2f position_after = {position.x + player->velocity.x,
         position.y + player->velocity.y};
-    sfVector2f intersection_point;
+    sfFloatRect rect_after;
+    sfFloatRect intersection;
     struct game_object *i;
 
+    sfSprite_setPosition(player->sprite, position_after);
+    rect_after = sfSprite_getGlobalBounds(player->sprite);
     GAME_OBJECT_VECTOR_FOR_EACH(&game->state.play.objects, i) {
-        if (sfFloatRect_contains(&i->rect, position_after.x,
-            position_after.y)) {
-            intersection_point = do_intersection_point(&i->rect, &position,
-                &position_after);
-            (intersection_point.y == i->rect.top ? &do_bottom_collision :
-                &do_left_collision)(player, game);
-            if (intersection_point.y == i->rect.top)
-                position_after.y = intersection_point.y;
-            else
-                position_after.x = intersection_point.x;
+        if (sfFloatRect_intersects(&i->rect, &rect_after, &intersection)) {
+            if (player->velocity.y > 0 && position.y < i->rect.top) {
+                do_bottom_collision(player, game);
+                position_after.y -= intersection.height;
+            } else if (player->velocity.x > 0 && position.x < i->rect.left) {
+                do_left_collision(player, game);
+                position_after.x -= intersection.width;
+            } else if (player->velocity.y < 0 && position.y >
+                i->rect.top + i->rect.height) {
+                position_after.y += intersection.height;
+                player->velocity.y = 0;
+            }
         }
     }
     sfSprite_setPosition(player->sprite, position_after);
@@ -259,5 +228,6 @@ struct game_player game_player_create(struct game_resources *resources)
     result.sprite = sfSprite_create();
     MY_ASSERT(result.sprite != NULL);
     sfSprite_setTexture(result.sprite, resources->player, sfFalse);
+    sfSprite_setPosition(result.sprite, (sfVector2f){0, 90 - 16});
     return (result);
 }

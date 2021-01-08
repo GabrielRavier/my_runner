@@ -103,12 +103,18 @@ static float get_width(struct game *self, float gap)
     return floorf(min_width + random_float_between(.0f, 1.f) * max_width) * 16;
 }
 
+static enum sequence_object_type get_next_object_type(struct game *game)
+{
+    (void)game;
+
+    return (random_int_between(SEQUENCE_OBJECT_TYPE_FIRST,
+        SEQUENCE_OBJECT_TYPE_LAST));
+}
+
 static void game_update_play_sequence(struct game_state_play_sequence *self,
     struct game *game)
 {
-    enum sequence_object_type type =
-        random_int_between(SEQUENCE_OBJECT_TYPE_FIRST,
-        SEQUENCE_OBJECT_TYPE_LAST);
+    enum sequence_object_type type = get_next_object_type(game);
     float gap;
     float drop;
     float max_j;

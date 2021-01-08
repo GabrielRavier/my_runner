@@ -52,7 +52,7 @@ bool parse_argv(int argc, char **argv, struct arguments *args)
     int c;
 
     args->framerate = 60;
-    args->resolution_multiplier = 2;
+    args->resolution_multiplier = 3;
     while (true) {
         c = my_getopt(argc, argv, "hf:m:");
         if (c == -1)

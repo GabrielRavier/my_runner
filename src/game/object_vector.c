@@ -50,7 +50,8 @@ void game_object_vector_clear(struct game_object_vector *self)
     struct game_object *i;
 
     GAME_OBJECT_VECTOR_FOR_EACH(self, i) {
-        sfSprite_destroy(i->sprite);
+        if (i->destroy != NULL)
+            i->destroy(i);
         free(i->private_data);
     }
     self->size = 0;

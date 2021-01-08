@@ -8,10 +8,13 @@
 #pragma once
 
 #include "object_vector.h"
+#include "player.h"
+#include "state_play_sequence.h"
 
 struct game_state_play {
+    struct game_state_play_sequence sequence;
     struct game_object_vector objects;
-    struct game_object player;
+    struct game_player player;
     sfSprite *midground;
     sfView *midground_view;
     sfSprite *background;

@@ -24,7 +24,7 @@ BINARY_NAME := my_runner
 all: $(BINARY_NAME)
 
 # Sources for this project
-SOURCE_FILES := main game/change_music game/create/create game/create/window game/destroy game/draw/draw game/handle/key game/main_loop game/object/player game/object_vector game/set/mode game/update/update parse_argv random
+SOURCE_FILES := main game/change_music game/create/create game/create/window game/destroy game/draw/draw game/handle/key game/main_loop game/player game/object/building_rect game/object_vector game/set/mode game/update/update parse_argv random
 
 OBJECT_FILES := $(addprefix obj/, $(addsuffix .o, $(SOURCE_FILES)))
 

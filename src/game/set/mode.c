@@ -7,16 +7,20 @@
 
 #include "mode.h"
 #include "../change_music.h"
-#include "../object/player.h"
+#include "../player.h"
 #include <SFML/Audio/Music.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/View.h>
 
 static void game_set_mode_init_play(struct game *self)
 {
-    self->state.play.player = game_object_player_create(&self->resources);
+    self->state.play.player = game_player_create(&self->resources);
     sfSprite_setTextureRect(self->state.play.player.sprite, (sfIntRect){0});
     game_object_vector_clear(&self->state.play.objects);
+    self->state.play.sequence.current_index = 0;
+    self->state.play.sequence.next_index = 0;
+    self->state.play.sequence.next_type = 0;
+    self->state.play.sequence.position.x = .0f;
 }
 
 void game_set_mode(struct game *self, enum game_mode mode)

@@ -6,6 +6,8 @@
 */
 
 #include "../update.h"
+#include "../../random.h"
+#include "../object/building_rect.h"
 #include "my/assert.h"
 #include "my/macros.h"
 #include <SFML/Graphics/Color.h>
@@ -62,14 +64,93 @@ static void game_update_play_background(struct game *self)
     sfSprite_setTextureRect(self->state.play.midground, background_rect);
 }
 
+static int get_hallway_height(struct game *self)
+{
+    float velocity_x = self->state.play.player.velocity.x;
+
+    if (velocity_x > 640)
+        return (7);
+    if (velocity_x > 480)
+        return (6);
+    if (velocity_x > 320)
+        return (5);
+    if (self->state.play.sequence.current_index > 0)
+        return (4);
+    return (3);
+}
+
+static int get_gap(struct game *self)
+{
+    float max_gap = ((self->state.play.player.velocity.x * .75f) / 20.f) * .75f;
+
+    return (random_float_between(MY_MAX(max_gap * .4f, 4.f), max_gap));
+}
+
+static float get_width(struct game *self, float gap)
+{
+    float min_width = (ceilf(480.f / 16.f) + 2) - gap;
+    float max_width;
+
+    if ((min_width < 15) && self->state.play.player.velocity.x <
+        self->state.play.player.max_velocity.x * .8f)
+        min_width = 15;
+    min_width = MY_MAX(min_width, 6);
+    max_width = min_width * 2;
+    return floorf(min_width + random_float_between(.0f, 1.f) * max_width) * 16;
+}
+
+static void game_update_play_sequence(struct game_state_play_sequence *self,
+    struct game *game)
+{
+    enum sequence_object_type type;
+    float gap;
+    float drop;
+    float max_j;
+    int hallway_height = 0;
+
+    if (self->position.x + self->width <
+        sfSprite_getPosition(game->state.play.player.sprite).x + 480)
+        return;
+    if (self->current_index == 0 || true) {
+        self->position.x = -60;
+        self->position.y = 90;
+        self->width = 900;
+        self->height = 480 - 90;
+        type = SEQUENCE_OBJECT_TYPE_HALLWAY;
+    }
+    if (type == SEQUENCE_OBJECT_TYPE_HALLWAY)
+        hallway_height = get_hallway_height(game);
+    if (self->current_index > 1) {
+        gap = get_gap(game);
+        max_j = MY_MIN(self->position.y / 16 - 2 - hallway_height, 6 *
+            game->state.play.player.jump_limit / .35f);
+        if (max_j > 0)
+            max_j = ceilf(max_j - (1 - random_float_between(.0f, 1.f)));
+        drop = (int)(random_float_between(.0f, 1.f) * MY_MIN(
+            self->height / 16 - 4, 10) - max_j);
+        if (type == SEQUENCE_OBJECT_TYPE_HALLWAY && gap > 10)
+            drop = 0;
+        if (drop == 0)
+            --drop;
+        self->position.x += self->width + gap * 16;
+        self->position.y += drop * 16;
+        self->height = 480 - self->position.y;
+        self->width = get_width(game, gap);
+    }
+    __auto_type building = game_object_create_building_rect(self);
+    game_object_vector_push_back(&game->state.play.objects, &building);
+}
+
 static void game_update_play(struct game *self)
 {
     struct game_object *i;
     sfVector2f player_position;
 
+    game_update_play_sequence(&self->state.play.sequence, self);
     GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
-        i->update(i, self);
-    self->state.play.player.update(&self->state.play.player, self);
+        if (i->update != NULL)
+            i->update(i, self);
+    game_player_update(&self->state.play.player, self);
     player_position = sfSprite_getPosition(self->state.play.player.sprite);
     player_position.x += 200;
     player_position.y = MY_MIN(player_position.y, 300);

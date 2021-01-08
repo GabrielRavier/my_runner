@@ -85,7 +85,7 @@ static int get_hallway_height(struct game *self)
 
 static int get_gap(struct game *self)
 {
-    float max_gap = ((self->state.play.player.velocity.x * 75.f) / 20.f) * .75f;
+    float max_gap = ((self->state.play.player.velocity.x * 65.f) / 20.f) * .75f;
 
     return (random_float_between(MY_MAX(max_gap * .4f, 4.f), MY_MAX(max_gap, 4.f)));
 }

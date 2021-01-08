@@ -102,7 +102,7 @@ static float get_width(struct game *self, float gap)
 static void game_update_play_sequence(struct game_state_play_sequence *self,
     struct game *game)
 {
-    enum sequence_object_type type;
+    enum sequence_object_type type = SEQUENCE_OBJECT_TYPE_HALLWAY;
     float gap;
     float drop;
     float max_j;
@@ -117,6 +117,12 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
         self->width = 900;
         self->height = 480 - 90;
         type = SEQUENCE_OBJECT_TYPE_HALLWAY;
+    }
+    if (self->current_index == 1) {
+        self->position.x += self->width + 160;
+        self->position.y = 240;
+        self->width = 42 * 16;
+        self->height = 480 - 240;
     }
     if (type == SEQUENCE_OBJECT_TYPE_HALLWAY)
         hallway_height = get_hallway_height(game);

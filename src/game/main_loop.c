@@ -39,13 +39,12 @@ static void do_updates_until_all_dropped_frames_done(struct game *self,
     *elapsed_time += sfClock_getElapsedTime(clock).microseconds;
     sfClock_restart(clock);
     game_update(self);
-    game_draw(self);
     *elapsed_time -= one_frame_in_microseconds;
     while (*elapsed_time > 0) {
         game_update(self);
-        game_draw(self);
         *elapsed_time -= one_frame_in_microseconds;
     }
+    game_draw(self);
 }
 
 void game_main_loop(struct game *self)

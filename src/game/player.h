@@ -18,9 +18,7 @@ struct game_player {
     sfSprite *sprite;
     float jump;
     float jump_limit;
-    bool stumble;
     int finished_stumbling;
-    float my;
     float ft;
     float fc;
     bool is_dead;
@@ -29,7 +27,6 @@ struct game_player {
     sfVector2f acceleration;
     sfVector2f velocity;
     sfVector2f max_velocity;
-    const char *epitath;
 };
 
 void game_player_update(struct game_player *player, struct game *game);

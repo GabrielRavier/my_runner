@@ -43,13 +43,12 @@ static void do_jump_animation(struct game_player *player, struct game *game)
     sfIntRect player_rect = sfSprite_getTextureRect(player->sprite);
     int real_offset = (player_rect.left + ((player_rect.top / 30) * 570)) + 30;
 
-    if (game->state.frames_since_mode_begin % 15)
+    if (game->state.frames_since_mode_begin % 5 || real_offset == 486 + 120)
         return;
     player_rect.left = real_offset % 570;
     player_rect.top = (real_offset / 570) * 30 + 6;
-    if (MY_CLAMP(real_offset, 486 + 30, 570 + 25) != real_offset &&
-        real_offset != 487 + 120)
-        player_rect = (sfIntRect){487, 6, 503 - 487, 29 - 6};
+    if (MY_CLAMP(real_offset, 486 + 30, 607) != real_offset)
+        player_rect = (sfIntRect){486, 6, 503 - 487, 29 - 6};
     sfSprite_setTextureRect(player->sprite, player_rect);
 }
 
@@ -58,9 +57,9 @@ static void do_run_animation(struct game_player *player, struct game *game)
     sfIntRect player_rect = sfSprite_getTextureRect(player->sprite);
     int real_offset = (player_rect.left + ((player_rect.top / 30) * 570)) + 30;
 
-    real_offset += (player->velocity.x >= 550) * 30;
-    if (game->state.frames_since_mode_begin % (player->velocity.x < 150 ? 4 :
-        player->velocity.x < 300 ? 2 : player->velocity.x < 550 ? 1 : 2))
+    real_offset += (player->velocity.x >= 5.5f) * 30;
+    if (game->state.frames_since_mode_begin % (player->velocity.x < 1.5f ? 8 :
+        player->velocity.x < 3.f ? 4 : player->velocity.x < 5.5f ? 2 : 4))
         return;
     player_rect.left = real_offset % 570;
     player_rect.top = (real_offset / 570) * 30 + 6;
@@ -86,11 +85,8 @@ static void do_fall_animation(struct game_player *player, struct game *game)
 static void do_bottom_collision(struct game_player *player,
     MY_ATTR_UNUSED struct game *game)
 {
-    if (player->my > .16f)
-        player->stumble = true;
     if (!is_jumping())
         player->jump = .0f;
-    player->my = .0f;
     player->on_floor = true;
 }
 
@@ -100,7 +96,6 @@ static void do_left_collision(struct game_player *player, struct game *game)
     player->acceleration.x = 0;
     player->velocity.x = 0;
     player->max_velocity.y = 1000;
-    player->epitath = "hit";
 }
 
 static void apply_velocity(struct game_player *player, struct game *game)
@@ -119,9 +114,11 @@ static void apply_velocity(struct game_player *player, struct game *game)
             if (player->velocity.y > 0 && position.y < i->rect.top) {
                 do_bottom_collision(player, game);
                 position_after.y -= intersection.height;
+                player->velocity.y = 0;
             } else if (player->velocity.x > 0 && position.x < i->rect.left) {
                 do_left_collision(player, game);
                 position_after.x -= intersection.width;
+                player->velocity.x = 0;
             } else if (player->velocity.y < 0 && position.y >
                 i->rect.top + i->rect.height) {
                 position_after.y += intersection.height;
@@ -164,7 +161,7 @@ void game_player_update(struct game_player *player, struct game *game)
     } else
         player->jump = -1;
     if (player->jump > 0) {
-        player->crane_feet = false;
+        player->on_floor = false;
         player->velocity.y = (player->jump < .08f) ? -player->max_velocity.y *
             .65f : -player->max_velocity.y;
     }
@@ -197,18 +194,11 @@ void game_player_update(struct game_player *player, struct game *game)
                 break;
             }
         }
-        if (player->stumble && player->finished_stumbling)
-            player->stumble = false;
-        if (!player->stumble)
-            do_run_animation(player, game);
-    } else if (player->velocity.y < -140)
+        do_run_animation(player, game);
+    } else if (player->velocity.y < -1.4f)
         do_jump_animation(player, game);
-    else {
+    else
         do_fall_animation(player, game);
-        player->stumble = false;
-    }
-    if (player->velocity.y == player->max_velocity.y)
-        player->my += 1.f / 60.f;
     player->velocity.x = MY_CLAMP(player->velocity.x + player->acceleration.x,
         -player->max_velocity.x, player->max_velocity.x);
     player->velocity.y = MY_CLAMP(player->velocity.y + player->acceleration.y,

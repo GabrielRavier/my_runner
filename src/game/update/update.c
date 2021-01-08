@@ -68,11 +68,11 @@ static int get_hallway_height(struct game *self)
 {
     float velocity_x = self->state.play.player.velocity.x;
 
-    if (velocity_x > 640)
+    if (velocity_x > 6.4f)
         return (7);
-    if (velocity_x > 480)
+    if (velocity_x > 4.8f)
         return (6);
-    if (velocity_x > 320)
+    if (velocity_x > 3.2f)
         return (5);
     if (self->state.play.sequence.current_index > 0)
         return (4);

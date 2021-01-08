@@ -173,24 +173,16 @@ void game_player_update(struct game_player *player, struct game *game)
             player->fc = 0;
             switch (random_int_between(1, 5)) {
             case 1:
-                sfSound_play(player->crane_feet ?
-                    game->resources.sounds.footc1.sf_sound :
-                    game->resources.sounds.foot1.sf_sound);
+                sfSound_play(game->resources.sounds.foot1.sf_sound);
                 break;
             case 2:
-                sfSound_play(player->crane_feet ?
-                    game->resources.sounds.footc2.sf_sound :
-                    game->resources.sounds.foot2.sf_sound);
+                sfSound_play(game->resources.sounds.foot2.sf_sound);
                 break;
             case 3:
-                sfSound_play(player->crane_feet ?
-                    game->resources.sounds.footc3.sf_sound :
-                    game->resources.sounds.foot3.sf_sound);
+                sfSound_play(game->resources.sounds.foot3.sf_sound);
                 break;
             case 4:
-                sfSound_play(player->crane_feet ?
-                    game->resources.sounds.footc4.sf_sound :
-                    game->resources.sounds.foot4.sf_sound);
+                sfSound_play(game->resources.sounds.foot4.sf_sound);
                 break;
             }
         }

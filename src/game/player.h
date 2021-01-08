@@ -22,7 +22,6 @@ struct game_player {
     float ft;
     float fc;
     bool is_dead;
-    bool crane_feet;
     bool on_floor;
     sfVector2f acceleration;
     sfVector2f velocity;

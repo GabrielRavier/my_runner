@@ -89,14 +89,6 @@ bool game_create(struct game *self, const struct arguments *args)
         !game_create_sound(&self->resources.sounds.foot2, "assets/foot2.wav") ||
         !game_create_sound(&self->resources.sounds.foot3, "assets/foot3.wav") ||
         !game_create_sound(&self->resources.sounds.foot4, "assets/foot4.wav") ||
-        !game_create_sound(&self->resources.sounds.footc1,
-            "assets/footc1.wav") ||
-        !game_create_sound(&self->resources.sounds.footc2,
-            "assets/footc2.wav") ||
-        !game_create_sound(&self->resources.sounds.footc3,
-            "assets/footc3.wav") ||
-        !game_create_sound(&self->resources.sounds.footc4,
-            "assets/footc4.wav") ||
         !game_create_sound(&self->resources.sounds.wall, "assets/wall.wav") ||
         !game_create_view(&self->state.camera, self->window) ||
         !game_create_view(&self->state.play.midground_view, self->window) ||

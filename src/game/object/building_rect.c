@@ -42,7 +42,7 @@ struct game_object game_object_create_building_rect(
     sfRectangleShape_setPosition(data->rect, sequence->position);
     sfRectangleShape_setSize(data->rect,
         (sfVector2f){sequence->width, sequence->height});
-    sfRectangleShape_setFillColor(data->rect, sfColor_fromRGB(176, 176, 191));
+    sfRectangleShape_setFillColor(data->rect, sfColor_fromRGB(134, 134, 150));
     result.rect = sfRectangleShape_getGlobalBounds(data->rect);
     result.private_data = data;
     return (result);

@@ -208,7 +208,7 @@ struct game_player game_player_create(struct game_resources *resources)
 {
     struct game_player result = {0};
 
-    result.acceleration = (sfVector2f){.01f, .12f};
+    result.acceleration = (sfVector2f){.01f, .20f};
     result.velocity.x = 1.25f;
     result.max_velocity = DEFAULT_MAX_VELOCITY;
     result.sprite = sfSprite_create();

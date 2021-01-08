@@ -83,7 +83,7 @@ static int get_gap(struct game *self)
 {
     float max_gap = ((self->state.play.player.velocity.x * .75f) / 20.f) * .75f;
 
-    return (random_float_between(MY_MAX(max_gap * .4f, 4.f), max_gap));
+    return (random_float_between(MY_MAX(max_gap * .4f, 4.f), MY_MAX(max_gap, 4.f)));
 }
 
 static float get_width(struct game *self, float gap)
@@ -108,7 +108,7 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     float max_j;
     int hallway_height = 0;
 
-    if (self->position.x + self->width <
+    if (self->position.x + self->width >
         sfSprite_getPosition(game->state.play.player.sprite).x + 480)
         return;
     if (self->current_index == 0 || true) {
@@ -139,6 +139,7 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     }
     __auto_type building = game_object_create_building_rect(self);
     game_object_vector_push_back(&game->state.play.objects, &building);
+    ++self->current_index;
 }
 
 static void game_update_play(struct game *self)

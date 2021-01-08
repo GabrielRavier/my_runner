@@ -22,15 +22,15 @@ static const sfVector2f DEFAULT_MAX_VELOCITY = {.x = 10.f, .y = 3.6f};
 
 static float get_acceleration_x(float velocity_x)
 {
-    if (velocity_x < 100)
-        return (60);
-    if (velocity_x < 250)
-        return (36);
-    if (velocity_x < 400)
-        return (24);
-    if (velocity_x < 600)
-        return (12);
-    return (4);
+    if (velocity_x < 1.5f)
+        return (.06f);
+    if (velocity_x < 2.5f)
+        return (.036f);
+    if (velocity_x < 4.f)
+        return (.024f);
+    if (velocity_x < 6.f)
+        return (.012f);
+    return (.004f);
 }
 
 static bool is_jumping(void)
@@ -138,8 +138,6 @@ void game_player_update(struct game_player *player, struct game *game)
         player->is_dead = true;
         return;
     }
-    if (player->acceleration.x <= .0f)
-        return;
     if (player->velocity.x < 0)
         player->velocity.x = 0;
     else
@@ -222,7 +220,7 @@ struct game_player game_player_create(struct game_resources *resources)
 {
     struct game_player result = {0};
 
-    result.acceleration = (sfVector2f){.01f, 12.f};
+    result.acceleration = (sfVector2f){.01f, .12f};
     result.velocity.x = 1.25f;
     result.max_velocity = DEFAULT_MAX_VELOCITY;
     result.sprite = sfSprite_create();

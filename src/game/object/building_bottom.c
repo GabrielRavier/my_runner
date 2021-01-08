@@ -23,6 +23,7 @@ struct building_bottom_data {
     sfRectangleShape *line6;
     sfRectangleShape *line7;
     sfRectangleShape *line89;
+    sfRectangleShape *rect_other_lines;
 };
 
 static void do_draw(struct game_object *self, sfRenderWindow *window)
@@ -37,12 +38,14 @@ static void do_draw(struct game_object *self, sfRenderWindow *window)
     sfRenderWindow_drawRectangleShape(window, data->line6, NULL);
     sfRenderWindow_drawRectangleShape(window, data->line7, NULL);
     sfRenderWindow_drawRectangleShape(window, data->line89, NULL);
+    sfRenderWindow_drawRectangleShape(window, data->rect_other_lines, NULL);
 }
 
 static void do_destroy(struct game_object *self)
 {
     struct building_bottom_data *data = self->private_data;
 
+    sfRectangleShape_destroy(data->rect_other_lines);
     sfRectangleShape_destroy(data->line89);
     sfRectangleShape_destroy(data->line7);
     sfRectangleShape_destroy(data->line6);
@@ -88,6 +91,9 @@ struct game_object game_object_create_building_bottom(
     data->line89 = make_line_below(data->line7, 134, 134, 150);
     sfRectangleShape_setSize(data->line89, (sfVector2f){
         sfRectangleShape_getSize(data->line89).x, 2});
+    data->rect_other_lines = make_line_below(data->line89, 176, 176, 191);
+    sfRectangleShape_setSize(data->rect_other_lines, (sfVector2f){
+        sfRectangleShape_getSize(data->rect_other_lines).x, 10000});
     result.rect = (sfFloatRect){sequence->position.x, sequence->position.y,
         sequence->width, sequence->height};
     result.private_data = data;

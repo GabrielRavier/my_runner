@@ -6,6 +6,7 @@
 */
 
 #include "building_bottom.h"
+#include "my/assert.h"
 #include <SFML/Graphics/Types.h>
 #include <SFML/Graphics/Image.h>
 #include <SFML/Graphics/RectangleShape.h>
@@ -74,6 +75,7 @@ struct game_object game_object_create_building_bottom(
     struct game_object result;
     struct building_bottom_data *data = malloc(sizeof(*data));
 
+    MY_ASSERT(data != NULL);
     result.draw = do_draw;
     result.destroy = do_destroy;
     result.update = NULL;

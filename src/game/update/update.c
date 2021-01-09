@@ -8,6 +8,7 @@
 #include "../update.h"
 #include "../../random.h"
 #include "../object/building_bottom.h"
+#include "../object/hallway_top.h"
 #include "my/assert.h"
 #include "my/macros.h"
 #include <SFML/Graphics/Color.h>
@@ -72,11 +73,11 @@ static int get_hallway_height(struct game *self)
 {
     float velocity_x = self->state.play.player.velocity.x;
 
-    if (velocity_x > 6.4f)
+    if (velocity_x > 8.4f)
         return (7);
-    if (velocity_x > 4.8f)
+    if (velocity_x > 6.8f)
         return (6);
-    if (velocity_x > 3.2f)
+    if (velocity_x > 4.2f)
         return (5);
     if (self->state.play.sequence.current_index > 0)
         return (4);
@@ -160,7 +161,13 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     if (type == SEQUENCE_OBJECT_TYPE_HALLWAY ||
         type == SEQUENCE_OBJECT_TYPE_ROOF) {
         __auto_type building_bottom = game_object_create_building_bottom(self);
-        game_object_vector_push_back(&game->state.play.objects, &building_bottom);
+        game_object_vector_push_back(&game->state.play.objects,
+            &building_bottom);
+    }
+    if (type == SEQUENCE_OBJECT_TYPE_HALLWAY) {
+        __auto_type hallway_top = game_object_create_hallway_top(self,
+            hallway_height * 16);
+        game_object_vector_push_back(&game->state.play.objects, &hallway_top);
     }
     ++self->current_index;
 }

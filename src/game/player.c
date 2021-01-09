@@ -119,7 +119,8 @@ static void apply_velocity(struct game_player *player, struct game *game)
                 do_left_collision(player, game);
                 position_after.x -= intersection.width + 2.f;
                 player->velocity.x = 0;
-            } else if (player->velocity.y < 0 && position.y >
+            } else if (player->velocity.y < 0 && (position.y +
+                rect_after.height) >
                 i->rect.top + i->rect.height) {
                 position_after.y += intersection.height;
                 player->velocity.y = 0;
@@ -208,7 +209,7 @@ struct game_player game_player_create(struct game_resources *resources)
 {
     struct game_player result = {0};
 
-    result.acceleration = (sfVector2f){.01f, .20f};
+    result.acceleration = (sfVector2f){.01f, .25f};
     result.velocity.x = 1.25f;
     result.max_velocity = DEFAULT_MAX_VELOCITY;
     result.sprite = sfSprite_create();

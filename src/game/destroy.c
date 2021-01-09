@@ -33,10 +33,12 @@ void game_destroy(struct game *self)
     sfSprite_destroy(self->state.play.background);
     sfView_destroy(self->state.play.midground_view);
     sfView_destroy(self->state.play.background_view);
+    sfView_destroy(self->state.play.distance_text_view);
     sfSprite_destroy(self->state.title.title_background);
     sfSprite_destroy(self->state.title.title_text_sprite);
     sfText_destroy(self->state.title.press_to_start_text);
     sfText_destroy(self->state.title.proud_to_present_text);
+    sfText_destroy(self->state.play.distance_text);
     sfView_destroy(self->state.camera);
     destroy_sound_with_buffer(&self->resources.sounds.wall);
     destroy_sound_with_buffer(&self->resources.sounds.foot4);

@@ -148,7 +148,7 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
             max_j = ceilf(max_j - (1 - random_float_between(.0f, 1.f)));
         drop = (int)(random_float_between(.0f, 1.f) * MY_MIN(
             self->height / 16 - 4, 10) - max_j);
-        if (type == SEQUENCE_OBJECT_TYPE_HALLWAY && gap > 10)
+        if (type == SEQUENCE_OBJECT_TYPE_HALLWAY && gap < 10)
             drop = 0;
         if (drop == 0)
             --drop;

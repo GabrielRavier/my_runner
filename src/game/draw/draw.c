@@ -6,37 +6,45 @@
 */
 
 #include "../draw.h"
+#include "../../text_utils.h"
 #include "my/assert.h"
 #include <SFML/Graphics/RenderWindow.h>
+#include <SFML/Graphics/Text.h>
+#include <SFML/Graphics/View.h>
 #include <stdbool.h>
 
-static void game_draw_title(struct game *self)
+static void game_draw_title(struct game_state_title *self,
+    sfRenderWindow *window)
 {
-    sfRenderWindow_clear(self->window, sfColor_fromRGB(53, 53, 61));
-    sfRenderWindow_drawSprite(self->window, self->state.title.title_background,
-        NULL);
-    sfRenderWindow_drawSprite(self->window, self->state.title.title_text_sprite,
-        NULL);
-    sfRenderWindow_drawText(self->window,
-        self->state.title.proud_to_present_text, NULL);
-    sfRenderWindow_drawText(self->window, self->state.title.press_to_start_text,
-        NULL);
+    sfRenderWindow_clear(window, sfColor_fromRGB(53, 53, 61));
+    sfRenderWindow_drawSprite(window, self->title_background, NULL);
+    sfRenderWindow_drawSprite(window, self->title_text_sprite, NULL);
+    sfRenderWindow_drawText(window, self->proud_to_present_text, NULL);
+    sfRenderWindow_drawText(window, self->press_to_start_text, NULL);
 }
 
-static void game_draw_play(struct game *self)
+static void game_draw_play(struct game_state_play *self, struct game *game,
+    sfRenderWindow *window)
 {
     struct game_object *i;
+    text_set_printf(self->distance_text, "%lldm", (long long)
+        sfSprite_getPosition(self->player.sprite).x / 10);
 
-    sfRenderWindow_clear(self->window, sfColor_fromRGB(176, 176, 191));
-    sfRenderWindow_setView(self->window, self->state.play.background_view);
-    sfRenderWindow_drawSprite(self->window, self->state.play.background, NULL);
-    sfRenderWindow_setView(self->window, self->state.play.midground_view);
-    sfRenderWindow_drawSprite(self->window, self->state.play.midground, NULL);
-    sfRenderWindow_setView(self->window, self->state.camera);
-    GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
+    sfText_setPosition(self->distance_text, (sfVector2f){480 -
+        sfText_getLocalBounds(self->distance_text).width, 0});
+    sfText_setFillColor(self->distance_text, sfColor_fromRGB(255, 255, 255));
+    sfRenderWindow_clear(window, sfColor_fromRGB(176, 176, 191));
+    sfRenderWindow_setView(window, self->background_view);
+    sfRenderWindow_drawSprite(window, self->background, NULL);
+    sfRenderWindow_setView(window, self->midground_view);
+    sfRenderWindow_drawSprite(window, self->midground, NULL);
+    sfRenderWindow_setView(window, game->state.camera);
+    GAME_OBJECT_VECTOR_FOR_EACH(&self->objects, i)
         if (i->draw != NULL)
-            i->draw(i, self->window);
-    sfRenderWindow_drawSprite(self->window, self->state.play.player.sprite, NULL);
+            i->draw(i, window);
+    sfRenderWindow_drawSprite(window, self->player.sprite, NULL);
+    sfRenderWindow_setView(window, self->distance_text_view);
+    sfRenderWindow_drawText(window, self->distance_text, NULL);
 }
 
 void game_draw(struct game *self)
@@ -45,10 +53,10 @@ void game_draw(struct game *self)
     sfRenderWindow_setView(self->window, self->state.camera);
     switch (self->state.mode) {
     case GAME_MODE_TITLE:
-        game_draw_title(self);
+        game_draw_title(&self->state.title, self->window);
         break;
     case GAME_MODE_PLAY:
-        game_draw_play(self);
+        game_draw_play(&self->state.play, self, self->window);
         break;
     default:
         MY_ASSERT(false && "Invalid game mode");

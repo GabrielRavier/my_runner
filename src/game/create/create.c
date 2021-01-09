@@ -35,6 +35,7 @@ static bool game_create_text(sfText **text, struct game *self)
     if (*text == NULL)
         return (false);
     sfText_setFont(*text, self->resources.nokia_font);
+    sfText_setCharacterSize(*text, 10);
     return (true);
 }
 
@@ -93,8 +94,10 @@ bool game_create(struct game *self, const struct arguments *args)
         !game_create_view(&self->state.camera, self->window) ||
         !game_create_view(&self->state.play.midground_view, self->window) ||
         !game_create_view(&self->state.play.background_view, self->window) ||
+        !game_create_view(&self->state.play.distance_text_view, self->window) ||
         !game_create_text(&self->state.title.proud_to_present_text, self) ||
         !game_create_text(&self->state.title.press_to_start_text, self) ||
+        !game_create_text(&self->state.play.distance_text, self) ||
         !game_create_sprite(&self->state.title.title_text_sprite,
             self->resources.title_text) ||
         !game_create_sprite(&self->state.title.title_background,
@@ -111,15 +114,13 @@ bool game_create(struct game *self, const struct arguments *args)
     sfView_setSize(self->state.play.background_view, (sfVector2f){1000.f, 1000.f});
     sfView_setSize(self->state.play.midground_view, (sfVector2f){500.f, 500.f});
     sfText_setString(self->state.title.proud_to_present_text,
-        "Gabriel Ravier is pround to present a CSFML port of");
-    sfText_setCharacterSize(self->state.title.proud_to_present_text, 10);
+        "Gabriel Ravier is pround to present a CSFML port of");;
     sfText_setPosition(self->state.title.proud_to_present_text,
         (sfVector2f){80, 10});
     sfText_setFillColor(self->state.title.proud_to_present_text,
         sfColor_fromRGB(134, 134, 150));
     sfText_setString(self->state.title.press_to_start_text,
         "Press X or C to start your daring escape.");
-    sfText_setCharacterSize(self->state.title.press_to_start_text, 10);
     sfText_setPosition(self->state.title.press_to_start_text,
         (sfVector2f){230, 305});
     sfSprite_setPosition(self->state.title.title_text_sprite,

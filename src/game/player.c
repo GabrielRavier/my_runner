@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-static const sfVector2f DEFAULT_MAX_VELOCITY = {.x = 10.f, .y = 3.6f};
+static const sfVector2f DEFAULT_MAX_VELOCITY = {.x = 10.f, .y = 4.5f};
 
 static float get_acceleration_x(float velocity_x)
 {

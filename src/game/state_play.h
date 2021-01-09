@@ -19,4 +19,6 @@ struct game_state_play {
     sfView *midground_view;
     sfSprite *background;
     sfView *background_view;
+    sfText *distance_text;
+    sfView *distance_text_view;
 };

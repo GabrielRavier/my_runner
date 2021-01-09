@@ -127,6 +127,10 @@ static void apply_velocity(struct game_player *player, struct game *game)
             }
         }
     }
+    if (ceilf(position_after.y) != ceilf(position.y)) {
+        position_after.y = ceilf(position_after.y);
+        player->on_floor = false;
+    }
     sfSprite_setPosition(player->sprite, position_after);
 }
 

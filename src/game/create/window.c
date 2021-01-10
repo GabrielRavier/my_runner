@@ -6,6 +6,7 @@
 */
 
 #include "internal.h"
+#include "../../parse_argv.h"
 #include <SFML/Graphics/RenderWindow.h>
 #include <SFML/Window/VideoMode.h>
 #include <SFML/Window/Window.h>

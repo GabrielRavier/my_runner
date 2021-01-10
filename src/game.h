@@ -9,8 +9,9 @@
 
 #include "game/state.h"
 #include "game/resources.h"
-#include "my/my_string.h"
 #include <SFML/Graphics/Types.h>
+
+struct my_string;
 
 // This is the main struct for the entire game
 struct game {

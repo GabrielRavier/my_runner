@@ -15,6 +15,7 @@
 #include "my/assert.h"
 #include "my/ctype.h"
 #include "my/macros.h"
+#include "my/my_string.h"
 #include <SFML/Graphics/Color.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>

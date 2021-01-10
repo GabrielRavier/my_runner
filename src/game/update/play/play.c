@@ -39,8 +39,10 @@ static void game_update_play_game_over(struct game_state_play *self,
         return;
     text_set_printf(self->gameover_text,
         "You ran %lldm before falling to your death.", distance_traveled);
-    sfText_setPosition(self->gameover_text, (sfVector2f){(int)((480 / 2) - (
-        sfText_getLocalBounds(self->gameover_text).width / 2)), 160});
+    sfText_setPosition(self->gameover_text, (sfVector2f){(int)((
+        sfView_getSize(game->state.camera).x / 2) - (
+        sfText_getLocalBounds(self->gameover_text).width / 2)), sfView_getSize(
+        game->state.camera).y / 2 - (240 - 160)});
     if (get_top_score() < distance_traveled)
         set_top_score(distance_traveled);
     if (game_is_jumping())
@@ -74,7 +76,7 @@ void game_update_play(struct game_state_play *self, struct game *game)
     distance_traveled =
         (long long)(sfSprite_getPosition(self->player.sprite).x / 10);
     text_set_printf(self->distance_text, "%lldm", distance_traveled);
-    sfText_setPosition(self->distance_text, (sfVector2f){480 -
-        sfText_getLocalBounds(self->distance_text).width, 0});
+    sfText_setPosition(self->distance_text, (sfVector2f){sfView_getSize(
+        game->state.camera).x - sfText_getLocalBounds(self->distance_text).width, 0});
     game_update_play_game_over(self, game, distance_traveled);
 }

@@ -16,6 +16,7 @@
 #include "my/ctype.h"
 #include "my/macros.h"
 #include "my/my_string.h"
+#include <SFML/Graphics/View.h>
 #include <math.h>
 
 static void do_position_width_height_generation(
@@ -69,7 +70,8 @@ void game_update_play_sequence(struct game_state_play_sequence *self,
     int hallway_height = 0;
 
     while ((self->position.x + self->width <=
-        sfSprite_getPosition(game->state.play.player.sprite).x + 480)) {
+        sfSprite_getPosition(game->state.play.player.sprite).x +
+        sfView_getSize(game->state.camera).x)) {
         if (self->current_index < 2)
             type = game_update_play_sequence_get_one_of_first_two(self);
         else

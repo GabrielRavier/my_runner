@@ -18,14 +18,15 @@ static bool game_create_rectangle_shape(sfRectangleShape **rect)
     return (*rect != NULL);
 }
 
-static bool game_create_state_play_rects(struct game_state_play *self)
+static bool game_create_state_play_rects(struct game_state_play *self,
+    const struct game *game)
 {
     if (!game_create_rectangle_shape(&self->gameover_text_rect))
         return (false);
-    sfRectangleShape_setPosition(self->gameover_text_rect,
-        (sfVector2f){0, 140});
+    sfRectangleShape_setPosition(self->gameover_text_rect, (sfVector2f){0,
+        sfView_getSize(game->state.camera).y / 2 - (240 - 140)});
     sfRectangleShape_setSize(self->gameover_text_rect, (sfVector2f){
-        1000, 40});
+        1000000, 40});
     sfRectangleShape_setFillColor(self->gameover_text_rect,
         sfColor_fromRGB(53, 53, 61));
     self->gameover_bottom_rect =
@@ -33,7 +34,7 @@ static bool game_create_state_play_rects(struct game_state_play *self)
     if (!self->gameover_bottom_rect)
         return (false);
     sfRectangleShape_setPosition(self->gameover_bottom_rect, (sfVector2f){
-        0, 302});
+        0, sfView_getSize(game->state.camera).y - (320 - 302)});
     return (true);
 }
 
@@ -47,7 +48,9 @@ static bool game_create_state_play_sprites(struct game_state_play *self,
         return (false);
     sfSprite_setScale(self->background, (sfVector2f){3, 3});
     sfSprite_setScale(self->midground, (sfVector2f){3, 3});
-    sfSprite_setPosition(self->gameover, (sfVector2f){50, 110});
+    sfSprite_setPosition(self->gameover, (sfVector2f){sfView_getSize(
+        game->state.camera).x / 2 - (480 - 50) / 2, sfView_getSize(
+        game->state.camera).y / 2 - (240 - 110)});
     return (true);
 }
 
@@ -59,7 +62,7 @@ bool game_create_state_play(struct game_state_play *self,
         !game_create_view(&self->distance_text_view, game->window) ||
         !game_create_text(&self->distance_text, game) ||
         !game_create_state_play_sprites(self, game) ||
-        !game_create_state_play_rects(self) ||
+        !game_create_state_play_rects(self, game) ||
         !game_create_text(&self->gameover_text, game) ||
         !game_create_text(&self->jump_to_retry_text, game))
         return (false);
@@ -68,7 +71,9 @@ bool game_create_state_play(struct game_state_play *self,
     sfView_setSize(self->midground_view, (sfVector2f){500.f, 500.f});
     sfText_setString(self->jump_to_retry_text,
         "Jump to retry your daring escape.");
-    sfText_setPosition(self->jump_to_retry_text, (sfVector2f){275, 305});
+    sfText_setPosition(self->jump_to_retry_text, (sfVector2f){sfView_getSize(
+        game->state.camera).x - (480 - 275), sfView_getSize(
+        game->state.camera).y - (320 - 305)});
     sfText_setFillColor(self->gameover_text, sfColor_fromRGB(255, 255, 255));
     sfText_setFillColor(self->distance_text, sfColor_fromRGB(255, 255, 255));
     return (true);

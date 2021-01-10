@@ -12,6 +12,7 @@
 #include "../../random.h"
 #include "my/macros.h"
 #include <SFML/Audio/Sound.h>
+#include <SFML/Graphics/View.h>
 
 static const sfVector2f DEFAULT_MAX_VELOCITY = {.x = 10.f, .y = 4.5f};
 
@@ -63,7 +64,9 @@ static void do_jump(struct game_player *self, struct game *game)
 
 void game_player_update(struct game_player *self, struct game *game)
 {
-    if (sfSprite_getPosition(self->sprite).y > 484) {
+    if (sfSprite_getPosition(self->sprite).y >
+        sfView_getCenter(game->state.camera).y +
+        (sfView_getSize(game->state.camera).y / 2) + 50) {
         self->is_dead = true;
         return;
     }

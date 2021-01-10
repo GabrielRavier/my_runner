@@ -18,8 +18,8 @@ static bool usage(const char *program_name)
         "    -m MULTIPLIER multiplies the screen "
         "width/height by this amount, by default this is 3, with a screen "
         "size (before multiplication) of 480 * 320\n"
-        "    -f FRAMERATE  sets the framerate to "
-        "FRAMERATE fps\n"
+        "    -f FRAMERATE  sets the framerate to FRAMERATE fps\n"
+        "    -u            enables fullscreen\n"
         "    -h            display this help and exit\n"
         "\n"
         "Implements a small runner game based on Canabalt.\n"
@@ -36,6 +36,9 @@ static bool do_single_option(int c, const char *argv0, struct arguments *args)
     case 'h':
     default:
         return (usage(argv0));
+    case 'u':
+        args->is_fullscreen = true;
+        break;
     case 'f':
     case 'm':
         errno = 0;
@@ -53,8 +56,9 @@ bool parse_argv(int argc, char **argv, struct arguments *args)
 
     args->framerate = 60;
     args->resolution_multiplier = 3;
+    args->is_fullscreen = false;
     while (true) {
-        c = my_getopt(argc, argv, "hf:m:");
+        c = my_getopt(argc, argv, "huf:m:");
         if (c == -1)
             break;
         if (!do_single_option(c, argv[0], args))

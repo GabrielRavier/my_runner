@@ -75,9 +75,9 @@ enum game_sequence_object_type game_update_play_sequence_get_one_of_first_two(
     struct game_state_play_sequence *self)
 {
     if (self->current_index == 0) {
-        self->position.x = -60;
+        self->position.x = -100000;
         self->position.y = 90;
-        self->width = 900;
+        self->width = 840 - self->position.x;
         self->height = 480 - 90;
         return (SEQUENCE_OBJECT_TYPE_HALLWAY);
     }

@@ -12,6 +12,7 @@
 struct arguments {
     unsigned framerate;
     unsigned resolution_multiplier;
+    bool is_fullscreen;
     const char *map_filename;
 };
 

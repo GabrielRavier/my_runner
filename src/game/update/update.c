@@ -13,6 +13,7 @@
 #include "../../text_utils.h"
 #include "../../top_score.h"
 #include "my/assert.h"
+#include "my/ctype.h"
 #include "my/macros.h"
 #include <SFML/Graphics/Color.h>
 #include <SFML/Graphics/Sprite.h>
@@ -108,10 +109,20 @@ static float get_width(struct game *self, float gap)
     return floorf(min_width + random_float_between(.0f, 1.f) * max_width) * 16;
 }
 
-static enum sequence_object_type get_next_object_type(struct game *game)
+static enum sequence_object_type get_next_object_type(
+    struct game_state_play_sequence *self, struct game *game)
 {
-    (void)game;
+    char map_character;
 
+    if (self->current_index < 2)
+        return (SEQUENCE_OBJECT_TYPE_FIRST);
+    if ((self->current_index - 2) < game->map->length) {
+        map_character = my_tolower(game->map->string[self->current_index - 2]);
+        if (map_character == 'r')
+            return (SEQUENCE_OBJECT_TYPE_ROOF);
+        if (map_character == 'h')
+            return (SEQUENCE_OBJECT_TYPE_HALLWAY);
+    }
     return (random_int_between(SEQUENCE_OBJECT_TYPE_FIRST,
         SEQUENCE_OBJECT_TYPE_LAST));
 }
@@ -128,7 +139,7 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     if (self->position.x + self->width >
         sfSprite_getPosition(game->state.play.player.sprite).x + 480)
         return;
-    type = get_next_object_type(game);
+    type = get_next_object_type(self, game);
     if (self->current_index == 0) {
         self->position.x = -60;
         self->position.y = 90;

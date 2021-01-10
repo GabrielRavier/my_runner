@@ -17,6 +17,10 @@
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/Texture.h>
 #include <SFML/Graphics/View.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/fcntl.h>
+#include <sys/types.h>
 
 static bool game_create_font(sfFont **font, const char *filename)
 {
@@ -74,6 +78,26 @@ static bool game_create_rectangle_shape(sfRectangleShape **rect)
     return (*rect != NULL);
 }
 
+static bool game_read_map(struct my_string **read_map, const char *map_filename)
+{
+    int map_fd = open(map_filename, O_RDONLY);
+    static const size_t READ_SIZE = 2000;
+    ssize_t read_retval;
+
+    if (map_fd < 0)
+        return (false);
+    *read_map = my_string_new();
+    do {
+        my_string_resize(*read_map, (*read_map)->length + READ_SIZE);
+        read_retval = read(map_fd, (*read_map)->string + (*read_map)->length -
+            READ_SIZE, READ_SIZE);
+        if (read_retval < 0)
+            return (false);
+    } while (read_retval == READ_SIZE);
+    my_string_resize(*read_map, (*read_map)->length - READ_SIZE + read_retval);
+    return (true);
+}
+
 bool game_create(struct game *self, const struct arguments *args)
 {
     if (!game_create_window(&self->window, args) ||
@@ -121,7 +145,8 @@ bool game_create(struct game *self, const struct arguments *args)
             self->resources.player) ||
         !game_create_rectangle_shape(&self->state.play.gameover_text_rect) ||
         !game_create_text(&self->state.play.gameover_text, self) ||
-        !game_create_text(&self->state.play.jump_to_retry_text, self))
+        !game_create_text(&self->state.play.jump_to_retry_text, self) ||
+        !game_read_map(&self->map, args->map_filename))
         return (false);
     self->state.music = NULL;
     game_object_vector_construct(&self->state.play.objects);

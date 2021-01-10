@@ -27,6 +27,7 @@ static void destroy_sound_with_buffer(struct sound_with_buffer *sound)
 
 void game_destroy(struct game *self)
 {
+    my_string_free(self->map);
     sfMusic_destroy(self->state.music);
     game_object_vector_destroy(&self->state.play.objects);
     sfText_destroy(self->state.play.jump_to_retry_text);

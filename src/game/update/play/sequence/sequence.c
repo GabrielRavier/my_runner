@@ -69,9 +69,9 @@ void game_update_play_sequence(struct game_state_play_sequence *self,
     enum game_sequence_object_type type;
     int hallway_height = 0;
 
-    while ((self->position.x + self->width <=
+    while (self->position.x + self->width <=
         sfSprite_getPosition(game->state.play.player.sprite).x +
-        sfView_getSize(game->state.camera).x)) {
+        sfView_getSize(game->state.camera).x) {
         if (self->current_index < 2)
             type = game_update_play_sequence_get_one_of_first_two(self);
         else

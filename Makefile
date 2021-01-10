@@ -24,7 +24,7 @@ BINARY_NAME := my_runner
 all: $(BINARY_NAME)
 
 # Sources for this project
-SOURCE_FILES := main game/change_music game/create/create game/create/window game/create/font game/create/map game/create/sound game/create/sprite game/create/state_play game/create/text game/create/texture game/create/view game/destroy game/draw/draw game/handle/key game/main_loop game/player game/object/building_bottom game/object/hallway_top/hallway_top game/object/hallway_top/make_next_hallway_part game/object_vector game/set/mode game/update/update game/update/title game/update/play/play game/update/play/sequence/sequence game/update/play/sequence/get game/is_jumping parse_argv random text_utils top_score
+SOURCE_FILES := main game/change_music game/create/create game/create/window game/create/font game/create/map game/create/sound game/create/sprite game/create/state_play game/create/text game/create/texture game/create/view game/destroy game/draw/draw game/handle/key game/main_loop game/player/player game/player/do_animation_and_foot_sound game/player/apply_velocity game/object/building_bottom game/object/hallway_top/hallway_top game/object/hallway_top/make_next_hallway_part game/object_vector game/set/mode game/update/update game/update/title game/update/play/play game/update/play/sequence/sequence game/update/play/sequence/get game/is_jumping parse_argv random text_utils top_score
 
 OBJECT_FILES := $(addprefix obj/, $(addsuffix .o, $(SOURCE_FILES)))
 
@@ -38,6 +38,7 @@ obj/%.o: src/%.c libmy
 	@mkdir --parents obj/game/object/hallway_top
 	@mkdir --parents obj/game/set
 	@mkdir --parents obj/game/update/play/sequence
+	@mkdir --parents obj/game/player
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 # Just build the entire libmy when we need these headers

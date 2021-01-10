@@ -77,6 +77,7 @@ void game_update_play(struct game_state_play *self, struct game *game)
         (long long)(sfSprite_getPosition(self->player.sprite).x / 10);
     text_set_printf(self->distance_text, "%lldm", distance_traveled);
     sfText_setPosition(self->distance_text, (sfVector2f){sfView_getSize(
-        game->state.camera).x - sfText_getLocalBounds(self->distance_text).width, 0});
+        game->state.camera).x -
+        sfText_getLocalBounds(self->distance_text).width, 0});
     game_update_play_game_over(self, game, distance_traveled);
 }

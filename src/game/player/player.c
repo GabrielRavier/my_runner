@@ -18,14 +18,14 @@ static const sfVector2f DEFAULT_MAX_VELOCITY = {.x = 10.f, .y = 4.5f};
 static float get_acceleration_x(float velocity_x)
 {
     if (velocity_x < 1.5f)
-        return (.06f);
+        return (.035f);
     if (velocity_x < 2.5f)
-        return (.036f);
-    if (velocity_x < 4.f)
         return (.024f);
+    if (velocity_x < 4.f)
+        return (.015f);
     if (velocity_x < 6.f)
-        return (.012f);
-    return (.004f);
+        return (.008f);
+    return (.003f);
 }
 
 static void handle_jump_input(struct game_player *self, struct game *game)

@@ -90,9 +90,11 @@ void game_player_create(struct game_player *self)
     self->is_dead = false;
     self->acceleration = (sfVector2f){.01f, .25f};
     self->velocity.x = 1.25f;
+    self->velocity.y = .0f;
     self->max_velocity = DEFAULT_MAX_VELOCITY;
     self->on_floor = true;
     self->jump = 0;
+    self->fc = 0;
     sfSprite_setPosition(self->sprite, (sfVector2f){0, 90 - 16});
     sfSprite_setTextureRect(self->sprite, (sfIntRect){0});
 }

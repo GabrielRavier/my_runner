@@ -10,7 +10,7 @@
 #include "../player.h"
 #include "../object.h"
 #include "../../game.h"
-#include "my/config.h"
+#include "my/features.h"
 #include <SFML/Audio/Sound.h>
 #include <SFML/Graphics/Rect.h>
 #include <SFML/System/Vector2.h>

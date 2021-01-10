@@ -9,6 +9,7 @@
 #include "../object/building_bottom.h"
 #include "../object/hallway_top.h"
 #include "../set/mode.h"
+#include "../is_jumping.h"
 #include "../../random.h"
 #include "../../text_utils.h"
 #include "../../top_score.h"
@@ -189,11 +190,6 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     ++self->current_index;
 }
 
-static bool is_jumping(void)
-{
-    return sfKeyboard_isKeyPressed(sfKeyX) || sfKeyboard_isKeyPressed(sfKeyC);
-}
-
 static void game_update_play(struct game *self)
 {
     struct game_object *i;
@@ -225,7 +221,7 @@ static void game_update_play(struct game *self)
             160});
         if (get_top_score() < distance_traveled)
             set_top_score(distance_traveled);
-        if (is_jumping())
+        if (game_is_jumping())
             game_set_mode(self, GAME_MODE_PLAY);
     }
 }

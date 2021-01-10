@@ -6,6 +6,7 @@
 */
 
 #include "player.h"
+#include "is_jumping.h"
 #include "../game.h"
 #include "../random.h"
 #include "my/assert.h"
@@ -31,11 +32,6 @@ static float get_acceleration_x(float velocity_x)
     if (velocity_x < 6.f)
         return (.012f);
     return (.004f);
-}
-
-static bool is_jumping(void)
-{
-    return sfKeyboard_isKeyPressed(sfKeyX) || sfKeyboard_isKeyPressed(sfKeyC);
 }
 
 static void do_jump_animation(struct game_player *player, struct game *game)
@@ -85,7 +81,7 @@ static void do_fall_animation(struct game_player *player, struct game *game)
 static void do_bottom_collision(struct game_player *player,
     MY_ATTR_UNUSED struct game *game)
 {
-    if (!is_jumping())
+    if (!game_is_jumping())
         player->jump = .0f;
     player->on_floor = true;
 }
@@ -156,7 +152,7 @@ void game_player_update(struct game_player *player, struct game *game)
         player->acceleration.x = get_acceleration_x(player->velocity.x);
     player->jump_limit = MY_MIN(player->velocity.x / (player->max_velocity.x *
         2.5f), 0.35f);
-    if (player->jump >= 0 && is_jumping()) {
+    if (player->jump >= 0 && game_is_jumping()) {
         if (player->jump == 0) {
             switch (random_int_between(1, 4)) {
             case 1:

@@ -8,12 +8,13 @@
 #pragma once
 
 #include "../../../state_play_sequence.h"
+#include "my/features.h"
 
 struct game;
 struct game_state_play;
 struct game_player;
 
-int game_update_play_sequence_get_hallway_height(
+MY_ATTR_PURE int game_update_play_sequence_get_hallway_height(
     const struct game_state_play *self);
 int game_update_play_sequence_get_gap(const struct game_player *self);
 float game_update_play_sequence_get_width(const struct game_player *self,

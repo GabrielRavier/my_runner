@@ -21,7 +21,7 @@ static int rand_at_most(int max)
     do {
         x = rand();
     } while (num_rand - defect <= (unsigned)x);
-    return (x / bin_size);
+    return ((int)(x / bin_size));
 }
 
 int random_int_between(int min, int max)

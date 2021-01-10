@@ -6,6 +6,7 @@
 */
 
 #include "object_vector.h"
+#include "object.h"
 #include "my/macros.h"
 #include "my/stdlib.h"
 #include "my/assert.h"

@@ -5,8 +5,10 @@
 ** Defines game_draw
 */
 
-#include "../draw.h"
-#include "../../text_utils.h"
+#include "draw.h"
+#include "object.h"
+#include "../game.h"
+#include "../text_utils.h"
 #include "my/assert.h"
 #include <SFML/Graphics/RenderWindow.h>
 #include <SFML/Graphics/Text.h>

@@ -8,6 +8,7 @@
 #include "mode.h"
 #include "../change_music.h"
 #include "../player.h"
+#include "../../game.h"
 #include <SFML/Audio/Music.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/View.h>

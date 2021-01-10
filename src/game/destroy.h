@@ -7,6 +7,6 @@
 
 #pragma once
 
-#include "../game.h"
+struct game;
 
 void game_destroy(struct game *self);

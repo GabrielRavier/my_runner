@@ -7,6 +7,7 @@
 
 #include "building_bottom.h"
 #include "my/assert.h"
+#include "../state_play_sequence.h"
 #include <SFML/Graphics/Types.h>
 #include <SFML/Graphics/Image.h>
 #include <SFML/Graphics/RectangleShape.h>

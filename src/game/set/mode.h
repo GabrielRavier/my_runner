@@ -7,6 +7,8 @@
 
 #pragma once
 
-#include "../../game.h"
+#include "../mode.h"
+
+struct game;
 
 void game_set_mode(struct game *self, enum game_mode mode);

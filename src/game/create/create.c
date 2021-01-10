@@ -7,6 +7,10 @@
 
 #include "../create.h"
 #include "internal.h"
+#include "../resources.h"
+#include "../state_title.h"
+#include "../../game.h"
+#include "../../parse_argv.h"
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/Texture.h>

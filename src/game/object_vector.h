@@ -7,8 +7,9 @@
 
 #pragma once
 
-#include "object.h"
 #include <stddef.h>
+
+struct game_object;
 
 struct game_object_vector {
     struct game_object *array;

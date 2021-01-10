@@ -7,6 +7,7 @@
 
 #include "../update.h"
 #include "internal.h"
+#include "../../game.h"
 #include "my/assert.h"
 
 void game_update(struct game *self)

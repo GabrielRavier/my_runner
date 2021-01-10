@@ -7,6 +7,8 @@
 
 #include "destroy.h"
 #include "sound_with_buffer.h"
+#include "state.h"
+#include "../game.h"
 #include "my/my_string.h"
 #include <SFML/Audio/Music.h>
 #include <SFML/Audio/Sound.h>

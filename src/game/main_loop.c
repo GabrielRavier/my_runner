@@ -7,9 +7,10 @@
 
 #include "main_loop.h"
 #include "draw.h"
+#include "update.h"
 #include "handle/key.h"
 #include "set/mode.h"
-#include "update.h"
+#include "../game.h"
 #include "my/stdio.h"
 #include "my/assert.h"
 #include <SFML/Graphics/RenderWindow.h>

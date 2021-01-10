@@ -7,8 +7,9 @@
 
 #pragma once
 
-#include "../game.h"
-#include "../parse_argv.h"
 #include <stdbool.h>
+
+struct game;
+struct arguments;
 
 bool game_create(struct game *self, const struct arguments *args);

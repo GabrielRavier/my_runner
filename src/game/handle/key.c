@@ -7,6 +7,7 @@
 
 #include "key.h"
 #include "../set/mode.h"
+#include "../../game.h"
 
 void game_handle_key(struct game *self, sfKeyCode key_code)
 {

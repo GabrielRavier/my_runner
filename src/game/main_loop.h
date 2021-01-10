@@ -7,6 +7,6 @@
 
 #pragma once
 
-#include "../game.h"
+struct game;
 
 void game_main_loop(struct game *self);

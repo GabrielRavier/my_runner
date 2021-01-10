@@ -10,6 +10,7 @@
 #include "object_vector.h"
 #include "player.h"
 #include "state_play_sequence.h"
+#include <SFML/Graphics/Types.h>
 
 struct game_state_play {
     struct game_state_play_sequence sequence;

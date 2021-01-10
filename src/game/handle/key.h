@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include "../../game.h"
 #include <SFML/Window/Keyboard.h>
+
+struct game;
 
 void game_handle_key(struct game *self, sfKeyCode key_code);

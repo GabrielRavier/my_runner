@@ -58,8 +58,8 @@ static void do_destroy(struct game_object *self)
     sfRectangleShape_destroy(data->top_line);
 }
 
-static sfRectangleShape *make_line_below(const sfRectangleShape *line, sfUint8 r,
-    sfUint8 g, sfUint8 b)
+static sfRectangleShape *make_line_below(const sfRectangleShape *line,
+    sfUint8 r, sfUint8 g, sfUint8 b)
 {
     sfRectangleShape *result = sfRectangleShape_copy(line);
     sfVector2f position = sfRectangleShape_getPosition(line);

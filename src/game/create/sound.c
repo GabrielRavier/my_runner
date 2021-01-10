@@ -10,8 +10,7 @@
 #include <SFML/Audio/Sound.h>
 #include <SFML/Audio/SoundBuffer.h>
 
-bool game_create_sound(struct sound_with_buffer *sound,
-    const char *filename)
+bool game_create_sound(struct sound_with_buffer *sound, const char *filename)
 {
     sound->buffer = sfSoundBuffer_createFromFile(filename);
     if (sound->buffer == NULL)

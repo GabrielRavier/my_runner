@@ -31,7 +31,7 @@ static bool usage(const char *program_name)
 static bool do_single_option(int c, const char *argv0, struct arguments *args)
 {
     char *num_end;
-    
+
     switch (c) {
     case 'h':
     default:
@@ -40,7 +40,7 @@ static bool do_single_option(int c, const char *argv0, struct arguments *args)
     case 'm':
         errno = 0;
         *(c == 'f' ? &args->framerate :
-          &args->resolution_multiplier) = my_strtol(optarg, &num_end, 0);
+        &args->resolution_multiplier) = my_strtol(optarg, &num_end, 0);
         if (errno || num_end == optarg || *num_end != '\0')
             return (usage(argv0));
     }

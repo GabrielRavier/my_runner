@@ -20,7 +20,8 @@ static void do_draw(struct game_object *self, sfRenderWindow *window)
     sfRenderWindow_drawRectangleShape(window, data->hallway_top, NULL);
     sfRenderWindow_drawRectangleShape(window, data->black_hallway_part, NULL);
     sfRenderWindow_drawRectangleShape(window, data->gray_hallway_part, NULL);
-    sfRenderWindow_drawRectangleShape(window, data->light_gray_hallway_part, NULL);
+    sfRenderWindow_drawRectangleShape(window, data->light_gray_hallway_part,
+        NULL);
     sfRenderWindow_drawRectangleShape(window, data->line_bottom, NULL);
     sfRenderWindow_drawRectangleShape(window, data->line_bottom2, NULL);
     sfRenderWindow_drawRectangleShape(window, data->line_left, NULL);
@@ -45,9 +46,8 @@ static void make_hallway_parts(struct game_object_hallway_top_data *data,
     const struct game_state_play_sequence *sequence, int hallway_height)
 {
     data->black_hallway_part = sfRectangleShape_create();
-    sfRectangleShape_setPosition(data->black_hallway_part,
-        (sfVector2f){sequence->position.x,
-        sequence->position.y - hallway_height});
+    sfRectangleShape_setPosition(data->black_hallway_part, (sfVector2f){
+        sequence->position.x, sequence->position.y - hallway_height});
     sfRectangleShape_setSize(data->black_hallway_part, (sfVector2f){
         sequence->width, hallway_height / 2});
     sfRectangleShape_setFillColor(data->black_hallway_part,

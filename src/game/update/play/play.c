@@ -18,12 +18,10 @@
 
 static void game_update_play_background(const struct game_state_play *self)
 {
-    sfVector2f player_position =
-        sfSprite_getPosition(self->player.sprite);
-    sfIntRect background_rect =
-        sfSprite_getTextureRect(self->background);
-    sfVector2f background_position = {((int)player_position.x / (512 * 3) - 5)
-        * (512 * 3), 0};
+    sfVector2f player_position = sfSprite_getPosition(self->player.sprite);
+    sfIntRect background_rect = sfSprite_getTextureRect(self->background);
+    sfVector2f background_position = {((int)player_position.x / (512 * 3) - 5) *
+        (512 * 3), 0};
 
     background_rect.width = 5000;
     sfSprite_setTextureRect(self->background, background_rect);

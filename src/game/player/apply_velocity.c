@@ -62,8 +62,7 @@ static void handle_collision(struct game_player *self, struct game *game,
     }
 }
 
-void game_player_apply_velocity(struct game_player *self,
-    struct game *game)
+void game_player_apply_velocity(struct game_player *self, struct game *game)
 {
     struct collision_handling_state state = {
         .position = sfSprite_getPosition(self->sprite),

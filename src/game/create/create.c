@@ -67,8 +67,7 @@ static bool game_create_state(struct game_state *self, const struct game *game)
     return (true);
 }
 
-bool game_create(struct game *self,
-    const struct arguments *args)
+bool game_create(struct game *self, const struct arguments *args)
 {
     return (game_create_window(&self->window, args) &&
         game_create_resources(&self->resources) &&

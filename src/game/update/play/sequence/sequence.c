@@ -51,12 +51,14 @@ static void do_spawn_objects(struct game_state_play_sequence *self,
     if (type == SEQUENCE_OBJECT_TYPE_HALLWAY ||
         type == SEQUENCE_OBJECT_TYPE_ROOF) {
         created_object = game_object_create_building_bottom(self);
-        game_object_vector_push_back(&game->state.play.objects, &created_object);
+        game_object_vector_push_back(&game->state.play.objects,
+            &created_object);
     }
     if (type == SEQUENCE_OBJECT_TYPE_HALLWAY) {
         created_object = game_object_create_hallway_top(self,
             hallway_height * 16);
-        game_object_vector_push_back(&game->state.play.objects, &created_object);
+        game_object_vector_push_back(&game->state.play.objects,
+            &created_object);
     }
 }
 

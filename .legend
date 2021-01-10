@@ -24,9 +24,9 @@ non-token:
 Each token on the map corresponds to the (x - 2)th object on the map, with x being the byte offset of the token (the first two objects are fixed and are always the same). A non-valid token will be interpreted as a random valid token. The file reader acts as if any bytes after the end of the map are non-valid tokens.
 
 Example: A file containing 'rifuwqfhhhrrrhhr' will be interpreted (in sequence) as:
-- 1 roof
-- 6 random objects
-- 3 hallways
+- 1 roof (r)
+- 6 random objects (since i, f, u, w, q and f are non-valid tokens)
+- 3 hallways (three times h)
 - 3 roofs
 - 2 hallways
 - 1 roof

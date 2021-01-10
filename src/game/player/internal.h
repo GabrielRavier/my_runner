@@ -10,7 +10,6 @@
 struct game;
 struct game_player;
 
-void game_player_apply_velocity(struct game_player *player,
-    struct game *game);
+void game_player_apply_velocity(struct game_player *player, struct game *game);
 void game_player_do_animation_and_foot_sound(struct game_player *self,
     struct game *game);

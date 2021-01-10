@@ -9,27 +9,27 @@
 #include "my/assert.h"
 #include <stdlib.h>
 
-static int rand_at_most(int max)
+static unsigned rand_at_most(unsigned max)
 {
-    const unsigned num_bins = (unsigned)max + 1;
+    const unsigned num_bins = max + 1;
     const unsigned num_rand = (unsigned)RAND_MAX + 1;
     const unsigned bin_size = num_rand / num_bins;
     const unsigned defect = num_rand % num_bins;
-    int x;
+    unsigned x;
 
     MY_ASSERT(max < RAND_MAX);
     do {
-        x = rand();
+        x = (unsigned)rand();
     } while (num_rand - defect <= (unsigned)x);
-    return ((int)(x / bin_size));
+    return (x / bin_size);
 }
 
 int random_int_between(int min, int max)
 {
-    const int range = max - min;
+    const unsigned range = (unsigned)(max - min);
 
     MY_ASSERT(min <= max);
-    return (rand_at_most(range) + min);
+    return ((int)rand_at_most(range) + min);
 }
 
 float random_float_between(float min, float max)

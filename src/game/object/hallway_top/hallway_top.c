@@ -15,7 +15,8 @@
 
 static void do_draw(struct game_object *self, sfRenderWindow *window)
 {
-    struct game_object_hallway_top_data *data = self->private_data;
+    __auto_type data =
+        (struct game_object_hallway_top_data *)self->private_data;
 
     sfRenderWindow_drawRectangleShape(window, data->hallway_top, NULL);
     sfRenderWindow_drawRectangleShape(window, data->black_hallway_part, NULL);
@@ -30,7 +31,8 @@ static void do_draw(struct game_object *self, sfRenderWindow *window)
 
 static void do_destroy(struct game_object *self)
 {
-    struct game_object_hallway_top_data *data = self->private_data;
+    __auto_type data =
+        (struct game_object_hallway_top_data *)self->private_data;
 
     sfRectangleShape_destroy(data->line_bottom2);
     sfRectangleShape_destroy(data->line_bottom);
@@ -83,7 +85,8 @@ struct game_object game_object_create_hallway_top(
     const struct game_state_play_sequence *sequence, int hallway_height)
 {
     struct game_object result;
-    struct game_object_hallway_top_data *data = malloc(sizeof(*data));
+    struct game_object_hallway_top_data *data =
+        (struct game_object_hallway_top_data *)malloc(sizeof(*data));
 
     MY_ASSERT(data != NULL);
     result.private_data = data;

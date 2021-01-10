@@ -25,9 +25,9 @@ static void game_object_vector_guarantee_can_expand(
     if (self->size + size >= current_allocated_size) {
         self->allocated_size = MY_MAX(self->size + size + 1 +
             EXTRA_ALLOCATED_SPACE, self->size * 2);
-        self->array = my_realloc_size(self->array, self->allocated_size *
-            sizeof(*self->array), current_allocated_size *
-            sizeof(*self->array));
+        self->array = (struct game_object *)my_realloc_size(self->array,
+            self->allocated_size * sizeof(*self->array),
+            current_allocated_size * sizeof(*self->array));
         MY_ASSERT(self->array != NULL);
     }
 }

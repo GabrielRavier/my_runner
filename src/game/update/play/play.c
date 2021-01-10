@@ -22,8 +22,8 @@ static void game_update_play_background(const struct game_state_play *self)
 {
     sfVector2f player_position = sfSprite_getPosition(self->player.sprite);
     sfIntRect background_rect = sfSprite_getTextureRect(self->background);
-    sfVector2f background_position = {((int)player_position.x / (512 * 3) - 5) *
-        (512 * 3), 0};
+    sfVector2f background_position = {(float)(((int)player_position.x / (512 *
+        3) - 5) * (512 * 3)), 0};
 
     background_rect.width = 5000;
     sfSprite_setTextureRect(self->background, background_rect);
@@ -53,7 +53,7 @@ static void game_update_play_views(struct game_state_play *self,
     sfVector2f player_position = sfSprite_getPosition(self->player.sprite);
 
     player_position.x += 200;
-    player_position.y = MY_MIN(player_position.y, 300);
+    player_position.y = MY_MIN(player_position.y, (float)300);
     sfView_setCenter(game->state.camera, player_position);
     sfView_setCenter(self->background_view, player_position);
     sfView_setCenter(self->midground_view, player_position);
@@ -71,7 +71,8 @@ void game_update_play(struct game_state_play *self, struct game *game)
     game_player_update(&self->player, game);
     game_update_play_views(self, game);
     game_update_play_background(&game->state.play);
-    distance_traveled = sfSprite_getPosition(self->player.sprite).x / 10;
+    distance_traveled =
+        (long long)(sfSprite_getPosition(self->player.sprite).x / 10);
     text_set_printf(self->distance_text, "%lldm", distance_traveled);
     sfText_setPosition(self->distance_text, (sfVector2f){480 -
         sfText_getLocalBounds(self->distance_text).width, 0});

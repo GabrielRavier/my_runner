@@ -28,6 +28,7 @@ bool game_create_map(struct my_string **read_map, const char *map_filename)
         if (read_retval < 0)
             return (false);
     } while ((size_t)read_retval == READ_SIZE);
-    my_string_resize(*read_map, (*read_map)->length - READ_SIZE + read_retval);
+    my_string_resize(*read_map, (*read_map)->length - READ_SIZE +
+        (size_t)read_retval);
     return (true);
 }

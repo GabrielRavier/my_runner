@@ -35,7 +35,7 @@ int game_update_play_sequence_get_gap(const struct game_player *self)
 {
     float max_gap = ((self->velocity.x * 65.f) / 20.f) * .75f;
 
-    return (random_float_between(MY_MAX(max_gap * .4f, 4.f),
+    return ((int)random_float_between(MY_MAX(max_gap * .4f, 4.f),
         MY_MAX(max_gap, 4.f)));
 }
 
@@ -67,8 +67,8 @@ enum game_sequence_object_type game_update_play_sequence_get_next_object_type(
         if (map_character == 'h')
             return (SEQUENCE_OBJECT_TYPE_HALLWAY);
     }
-    return (random_int_between(SEQUENCE_OBJECT_TYPE_FIRST,
-        SEQUENCE_OBJECT_TYPE_LAST));
+    return ((enum game_sequence_object_type)random_int_between(
+        SEQUENCE_OBJECT_TYPE_FIRST, SEQUENCE_OBJECT_TYPE_LAST));
 }
 
 enum game_sequence_object_type game_update_play_sequence_get_one_of_first_two(

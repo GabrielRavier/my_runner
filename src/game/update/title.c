@@ -37,10 +37,11 @@ static void set_text_alpha(sfText *sprite, sfUint8 alpha)
 void game_update_title(struct game_state *self)
 {
     sfVector2f camera_center = {480 / 2, (320 / 2) - 10};
-    uintmax_t title_alpha = MY_CLAMP((intmax_t)(-(100 * 2) +
+    sfUint8 title_alpha = (sfUint8)MY_CLAMP((intmax_t)((uintmax_t)-(100 * 2) +
         self->frames_since_mode_begin * 2), (intmax_t)0, (intmax_t)0xFF);
-    uintmax_t press_start_alpha = MY_CLAMP((intmax_t)(-(100 * 2) - (0x100 / 2) +
-        self->frames_since_mode_begin * 2), (intmax_t)0, (intmax_t)0xFF);
+    sfUint8 press_start_alpha = (sfUint8)MY_CLAMP((intmax_t)((uintmax_t)-(100 *
+        2) - (0x100 / 2) + self->frames_since_mode_begin * 2), (intmax_t)0,
+        (intmax_t)0xFF);
 
     camera_center.y += (100000.f /
         (powf(self->frames_since_mode_begin + 10, 2)));

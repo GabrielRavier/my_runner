@@ -30,7 +30,7 @@ struct building_bottom_data {
 
 static void do_draw(struct game_object *self, sfRenderWindow *window)
 {
-    struct building_bottom_data *data = self->private_data;
+    __auto_type data = (struct building_bottom_data *)self->private_data;
 
     sfRenderWindow_drawRectangleShape(window, data->top_line, NULL);
     sfRenderWindow_drawRectangleShape(window, data->line2, NULL);
@@ -45,7 +45,7 @@ static void do_draw(struct game_object *self, sfRenderWindow *window)
 
 static void do_destroy(struct game_object *self)
 {
-    struct building_bottom_data *data = self->private_data;
+    __auto_type data = (struct building_bottom_data *)self->private_data;
 
     sfRectangleShape_destroy(data->rect_other_lines);
     sfRectangleShape_destroy(data->line89);
@@ -95,7 +95,8 @@ struct game_object game_object_create_building_bottom(
     struct game_state_play_sequence *sequence)
 {
     struct game_object result;
-    struct building_bottom_data *data = malloc(sizeof(*data));
+    __auto_type data = (struct building_bottom_data *)malloc(
+        sizeof(struct building_bottom_data));
 
     MY_ASSERT(data != NULL);
     result.draw = do_draw;

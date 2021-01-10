@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     struct game game;
     struct arguments args;
 
-    srand(time(NULL));
+    srand((unsigned)time(NULL));
     if (!parse_argv(argc, argv, &args))
         return (0);
     if (!game_create(&game, &args)) {

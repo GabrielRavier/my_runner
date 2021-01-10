@@ -17,7 +17,7 @@
 
 static const int PERMISSIONS_ALL_READ_WRITE = 0666;
 static const int64_t DEFAULT_SCORE = 0;
-static const size_t MOST_CHARS_SCORE = 6;
+static const size_t MOST_CHARS_SCORE = 20;
 
 void set_top_score(int64_t top_score)
 {

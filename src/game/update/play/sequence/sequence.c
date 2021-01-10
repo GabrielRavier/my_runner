@@ -68,19 +68,20 @@ void game_update_play_sequence(struct game_state_play_sequence *self,
     enum game_sequence_object_type type;
     int hallway_height = 0;
 
-    if (self->position.x + self->width >
-        sfSprite_getPosition(game->state.play.player.sprite).x + 480)
-        return;
-    if (self->current_index < 2)
-        type = game_update_play_sequence_get_one_of_first_two(self);
-    else
-        type = game_update_play_sequence_get_next_object_type(
-            self->current_index, game);
-    if (type == SEQUENCE_OBJECT_TYPE_HALLWAY)
-        hallway_height = game_update_play_sequence_get_hallway_height(
-            &game->state.play);
-    if (self->current_index >= 2)
-        do_position_width_height_generation(self, game, hallway_height, type);
-    do_spawn_objects(self, game, type, hallway_height);
-    ++self->current_index;
+    while ((self->position.x + self->width <=
+        sfSprite_getPosition(game->state.play.player.sprite).x + 480)) {
+        if (self->current_index < 2)
+            type = game_update_play_sequence_get_one_of_first_two(self);
+        else
+            type = game_update_play_sequence_get_next_object_type(
+                self->current_index, game);
+        if (type == SEQUENCE_OBJECT_TYPE_HALLWAY)
+            hallway_height = game_update_play_sequence_get_hallway_height(
+                &game->state.play);
+        if (self->current_index >= 2)
+            do_position_width_height_generation(self, game, hallway_height,
+                type);
+        do_spawn_objects(self, game, type, hallway_height);
+        ++self->current_index;
+    }
 }

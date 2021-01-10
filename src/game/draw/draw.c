@@ -23,16 +23,22 @@ static void game_draw_title(struct game_state_title *self,
     sfRenderWindow_drawText(window, self->press_to_start_text, NULL);
 }
 
-static void game_draw_play(struct game_state_play *self, struct game *game,
+static void game_draw_play_background(struct game_state_play *self,
     sfRenderWindow *window)
 {
-    struct game_object *i;
-
     sfRenderWindow_clear(window, sfColor_fromRGB(176, 176, 191));
     sfRenderWindow_setView(window, self->background_view);
     sfRenderWindow_drawSprite(window, self->background, NULL);
     sfRenderWindow_setView(window, self->midground_view);
     sfRenderWindow_drawSprite(window, self->midground, NULL);
+}
+
+static void game_draw_play(struct game_state_play *self, struct game *game,
+    sfRenderWindow *window)
+{
+    struct game_object *i;
+
+    game_draw_play_background(self, window);
     sfRenderWindow_setView(window, game->state.camera);
     GAME_OBJECT_VECTOR_FOR_EACH(&self->objects, i)
         if (i->draw != NULL)

@@ -26,42 +26,52 @@ static void destroy_sound_with_buffer(struct sound_with_buffer *sound)
     sfSoundBuffer_destroy(sound->buffer);
 }
 
+static void game_destroy_state(struct game_state *self)
+{
+    sfMusic_destroy(self->music);
+    game_object_vector_destroy(&self->play.objects);
+    sfText_destroy(self->play.jump_to_retry_text);
+    sfRectangleShape_destroy(self->play.gameover_bottom_rect);
+    sfRectangleShape_destroy(self->play.gameover_text_rect);
+    sfText_destroy(self->play.gameover_text);
+    sfSprite_destroy(self->play.gameover);
+    sfSprite_destroy(self->play.player.sprite);
+    sfSprite_destroy(self->play.midground);
+    sfSprite_destroy(self->play.background);
+    sfView_destroy(self->play.midground_view);
+    sfView_destroy(self->play.background_view);
+    sfView_destroy(self->play.distance_text_view);
+    sfSprite_destroy(self->title.title_background);
+    sfSprite_destroy(self->title.title_text_sprite);
+    sfText_destroy(self->title.press_to_start_text);
+    sfText_destroy(self->title.proud_to_present_text);
+    sfText_destroy(self->play.distance_text);
+    sfView_destroy(self->camera);
+}
+
+static void game_destroy_resources(struct game_resources *self)
+{
+    destroy_sound_with_buffer(&self->sounds.wall);
+    destroy_sound_with_buffer(&self->sounds.foot4);
+    destroy_sound_with_buffer(&self->sounds.foot3);
+    destroy_sound_with_buffer(&self->sounds.foot2);
+    destroy_sound_with_buffer(&self->sounds.foot1);
+    destroy_sound_with_buffer(&self->sounds.jump3);
+    destroy_sound_with_buffer(&self->sounds.jump2);
+    destroy_sound_with_buffer(&self->sounds.jump1);
+    sfTexture_destroy(self->gameover);
+    sfTexture_destroy(self->midground);
+    sfTexture_destroy(self->background);
+    sfTexture_destroy(self->player);
+    sfTexture_destroy(self->title_text);
+    sfTexture_destroy(self->title_background);
+    sfFont_destroy(self->nokia_font);
+}
+
 void game_destroy(struct game *self)
 {
     my_string_free(self->map);
-    sfMusic_destroy(self->state.music);
-    game_object_vector_destroy(&self->state.play.objects);
-    sfText_destroy(self->state.play.jump_to_retry_text);
-    sfRectangleShape_destroy(self->state.play.gameover_bottom_rect);
-    sfRectangleShape_destroy(self->state.play.gameover_text_rect);
-    sfText_destroy(self->state.play.gameover_text);
-    sfSprite_destroy(self->state.play.gameover);
-    sfSprite_destroy(self->state.play.player.sprite);
-    sfSprite_destroy(self->state.play.midground);
-    sfSprite_destroy(self->state.play.background);
-    sfView_destroy(self->state.play.midground_view);
-    sfView_destroy(self->state.play.background_view);
-    sfView_destroy(self->state.play.distance_text_view);
-    sfSprite_destroy(self->state.title.title_background);
-    sfSprite_destroy(self->state.title.title_text_sprite);
-    sfText_destroy(self->state.title.press_to_start_text);
-    sfText_destroy(self->state.title.proud_to_present_text);
-    sfText_destroy(self->state.play.distance_text);
-    sfView_destroy(self->state.camera);
-    destroy_sound_with_buffer(&self->resources.sounds.wall);
-    destroy_sound_with_buffer(&self->resources.sounds.foot4);
-    destroy_sound_with_buffer(&self->resources.sounds.foot3);
-    destroy_sound_with_buffer(&self->resources.sounds.foot2);
-    destroy_sound_with_buffer(&self->resources.sounds.foot1);
-    destroy_sound_with_buffer(&self->resources.sounds.jump3);
-    destroy_sound_with_buffer(&self->resources.sounds.jump2);
-    destroy_sound_with_buffer(&self->resources.sounds.jump1);
-    sfTexture_destroy(self->resources.gameover);
-    sfTexture_destroy(self->resources.midground);
-    sfTexture_destroy(self->resources.background);
-    sfTexture_destroy(self->resources.player);
-    sfTexture_destroy(self->resources.title_text);
-    sfTexture_destroy(self->resources.title_background);
-    sfFont_destroy(self->resources.nokia_font);
+    game_destroy_state(&self->state);
+    game_destroy_resources(&self->resources);
     sfRenderWindow_destroy(self->window);
 }

@@ -1,0 +1,33 @@
+The map has this grammar:
+
+map:
+    byte
+    map byte
+
+byte:
+    token
+    non-token
+
+token:
+    hallway
+    roof
+
+hallway:
+    'h'
+
+roof:
+    'r'
+
+non-token:
+    any single byte that is not a valid token
+
+Each token on the map corresponds to the (x - 2)th object on the map, with x being the byte offset of the token (the first two objects are fixed and are always the same). A non-valid token will be interpreted as a random valid token. The file reader acts as if any bytes after the end of the map are non-valid tokens.
+
+Example: A file containing 'rifuwqfhhhrrrhhr' will be interpreted (in sequence) as:
+- 1 roof
+- 6 random objects
+- 3 hallways
+- 3 roofs
+- 2 hallways
+- 1 roof
+- An infinite amount of random objects

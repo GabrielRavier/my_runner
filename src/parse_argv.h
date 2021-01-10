@@ -12,6 +12,7 @@
 struct arguments {
     unsigned framerate;
     unsigned resolution_multiplier;
+    const char *map_filename;
 };
 
 bool parse_argv(int argc, char **argv, struct arguments *args);

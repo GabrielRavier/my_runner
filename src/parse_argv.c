@@ -14,7 +14,7 @@
 
 static bool usage(const char *program_name)
 {
-    my_printf("Usage: %s [OPTION]...\n\n"
+    my_printf("Usage: %s [OPTION]... [FILE]\n\n"
         "    -m MULTIPLIER multiplies the screen "
         "width/height by this amount, by default this is 3, with a screen "
         "size (before multiplication) of 480 * 320\n"
@@ -60,5 +60,8 @@ bool parse_argv(int argc, char **argv, struct arguments *args)
         if (!do_single_option(c, argv[0], args))
             return (false);
     }
+    if (argv[optind] == NULL || argv[optind + 1] != NULL)
+        return (usage(argv[0]));
+    args->map_filename = argv[optind];
     return (true);
 }

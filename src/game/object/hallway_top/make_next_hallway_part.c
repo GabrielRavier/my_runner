@@ -17,9 +17,9 @@ sfRectangleShape *game_object_hallway_top_make_next_hallway_part(
     MY_ASSERT(result != NULL);
     sfRectangleShape_setPosition(result, (sfVector2f){
         sfRectangleShape_getPosition(result).x, sfRectangleShape_getPosition(
-        result).y + offset_y});
+        result).y + (float)offset_y});
     sfRectangleShape_setSize(result, (sfVector2f){sfRectangleShape_getSize(
-        result).x, size_y});
+        result).x, (float)size_y});
     sfRectangleShape_setFillColor(result, color);
     return (result);
 }

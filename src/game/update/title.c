@@ -44,8 +44,8 @@ void game_update_title(struct game_state *self)
         (intmax_t)0xFF);
 
     camera_center.y += (100000.f /
-        (powf(self->frames_since_mode_begin + 10, 2)));
-    camera_center.y = MY_MAX(camera_center.y, (320 / 2));
+        (powf((float)self->frames_since_mode_begin + 10, 2)));
+    camera_center.y = MY_MAX(camera_center.y, (float)(320 / 2));
     sfView_setCenter(self->camera, camera_center);
     set_sprite_alpha(self->title.title_text_sprite, title_alpha);
     set_text_alpha(self->title.proud_to_present_text, title_alpha);

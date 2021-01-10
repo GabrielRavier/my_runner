@@ -34,7 +34,7 @@ int random_int_between(int min, int max)
 
 float random_float_between(float min, float max)
 {
-    const float scale = rand() / (float)RAND_MAX;
+    const float scale = (float)rand() / (float)RAND_MAX;
 
     MY_ASSERT(min <= max);
     return min + scale * (max - min);

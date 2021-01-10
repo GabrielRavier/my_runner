@@ -49,9 +49,9 @@ static void make_hallway_parts(struct game_object_hallway_top_data *data,
 {
     data->black_hallway_part = sfRectangleShape_create();
     sfRectangleShape_setPosition(data->black_hallway_part, (sfVector2f){
-        sequence->position.x, sequence->position.y - hallway_height});
+        sequence->position.x, sequence->position.y - (float)hallway_height});
     sfRectangleShape_setSize(data->black_hallway_part, (sfVector2f){
-        sequence->width, hallway_height / 2});
+        sequence->width, (float)hallway_height / 2});
     sfRectangleShape_setFillColor(data->black_hallway_part,
         sfColor_fromRGB(53, 53, 61));
     data->gray_hallway_part = game_object_hallway_top_make_next_hallway_part(
@@ -99,7 +99,7 @@ struct game_object game_object_create_hallway_top(
     sfRectangleShape_setPosition(data->hallway_top, (sfVector2f){
         sequence->position.x, -1000});
     sfRectangleShape_setSize(data->hallway_top, (sfVector2f){sequence->width,
-        1000 + sequence->position.y - hallway_height});
+        1000 + sequence->position.y - (float)hallway_height});
     make_lines(data);
     make_hallway_parts(data, sequence, hallway_height);
     result.rect = sfRectangleShape_getGlobalBounds(data->hallway_top);

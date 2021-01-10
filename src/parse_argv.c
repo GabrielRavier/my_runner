@@ -28,6 +28,8 @@ static bool usage(const char *program_name)
     return (false);
 }
 
+// TODO: Fix this for numbers that fit in long but not in int (not a big problem
+// but shortening could lead to somewhat surprising results
 static bool do_single_option(int c, const char *argv0, struct arguments *args)
 {
     char *num_end;
@@ -43,7 +45,8 @@ static bool do_single_option(int c, const char *argv0, struct arguments *args)
     case 'm':
         errno = 0;
         *(c == 'f' ? &args->framerate :
-        &args->resolution_multiplier) = my_strtol(optarg, &num_end, 0);
+        &args->resolution_multiplier) = (unsigned)my_strtol(optarg, &num_end,
+            0);
         if (errno || num_end == optarg || *num_end != '\0')
             return (usage(argv0));
     }

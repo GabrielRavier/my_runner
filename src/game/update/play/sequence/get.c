@@ -42,12 +42,12 @@ int game_update_play_sequence_get_gap(const struct game_player *self)
 float game_update_play_sequence_get_width(const struct game_player *self,
     int gap)
 {
-    float min_width = (ceilf(480.f / 16.f) + 2) - gap;
+    float min_width = (ceilf(480.f / 16.f) + 2) - (float)gap;
     float max_width;
 
     if ((min_width < 15) && self->velocity.x < self->max_velocity.x * .8f)
         min_width = 15;
-    min_width = MY_MAX(min_width, 6);
+    min_width = MY_MAX(min_width, 6.f);
     max_width = min_width * 2;
     return (floorf(min_width + random_float_between(.0f, 1.f) * max_width) *
         16);
@@ -61,7 +61,7 @@ enum game_sequence_object_type game_update_play_sequence_get_next_object_type(
     if (current_index < 2)
         return (SEQUENCE_OBJECT_TYPE_FIRST);
     if ((current_index - 2) < game->map->length) {
-        map_character = my_tolower(game->map->string[current_index - 2]);
+        map_character = (char)my_tolower(game->map->string[current_index - 2]);
         if (map_character == 'r')
             return (SEQUENCE_OBJECT_TYPE_ROOF);
         if (map_character == 'h')

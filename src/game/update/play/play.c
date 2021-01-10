@@ -39,7 +39,7 @@ static void game_update_play_game_over(struct game_state_play *self,
         return;
     text_set_printf(self->gameover_text,
         "You ran %lldm before falling to your death.", distance_traveled);
-    sfText_setPosition(self->gameover_text, (sfVector2f){(int)((
+    sfText_setPosition(self->gameover_text, (sfVector2f){(float)(int)((
         sfView_getSize(game->state.camera).x / 2) - (
         sfText_getLocalBounds(self->gameover_text).width / 2)), sfView_getSize(
         game->state.camera).y / 2 - (240 - 160)});

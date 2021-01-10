@@ -22,10 +22,10 @@ static void do_position_width_height_generation(
     struct game_state_play_sequence *self, const struct game *game,
     int hallway_height, enum game_sequence_object_type type)
 {
-    float gap = game_update_play_sequence_get_gap(&game->state.play.player);
+    int gap = game_update_play_sequence_get_gap(&game->state.play.player);
     float max_j = MY_MIN(self->position.y / 16 - 2 - hallway_height, 6 *
         game->state.play.player.jump_limit / .35f);
-    float drop;
+    int drop;
 
     if (max_j > 0)
         max_j = ceilf(max_j - (1 - random_float_between(.0f, 1.f)));

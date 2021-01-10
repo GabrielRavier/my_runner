@@ -40,7 +40,7 @@ int game_update_play_sequence_get_gap(const struct game_player *self)
 }
 
 float game_update_play_sequence_get_width(const struct game_player *self,
-    float gap)
+    int gap)
 {
     float min_width = (ceilf(480.f / 16.f) + 2) - gap;
     float max_width;

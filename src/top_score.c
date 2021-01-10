@@ -36,7 +36,7 @@ int64_t get_top_score(void)
 {
     FILE *score_file = fopen("top_score.txt", "r");
     char buffer[MOST_CHARS_SCORE + 1];
-    int bytes_read;
+    size_t bytes_read;
     int result;
 
     if (!score_file)

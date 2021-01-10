@@ -32,7 +32,8 @@ static void do_position_width_height_generation(
         max_j = ceilf(max_j - (1 - random_float_between(.0f, 1.f)));
     drop = (int)(random_float_between(.0f, 1.f) *
         MY_MIN(self->height / 16 - 4, 10.f) - max_j);
-    if (type == SEQUENCE_OBJECT_TYPE_HALLWAY && gap < 10)
+    if (type == SEQUENCE_OBJECT_TYPE_HALLWAY && drop > 0 &&
+        (gap < 10 || gap < drop))
         drop = 0;
     if (drop == 0)
         --drop;

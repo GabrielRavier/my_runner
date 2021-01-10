@@ -37,13 +37,13 @@ int64_t get_top_score(void)
     FILE *score_file = fopen("top_score.txt", "r");
     char buffer[MOST_CHARS_SCORE + 1];
     size_t bytes_read;
-    int result;
+    int64_t result;
 
     if (!score_file)
         return DEFAULT_SCORE;
     bytes_read = fread(buffer, 1, MOST_CHARS_SCORE, score_file);
     buffer[bytes_read] = '\0';
-    result = my_strtol(buffer, NULL, 10);
+    result = my_strtoll(buffer, NULL, 10);
     fclose(score_file);
     return result;
 }

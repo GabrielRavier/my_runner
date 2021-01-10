@@ -11,6 +11,7 @@
 #include <SFML/Audio/Sound.h>
 #include <SFML/Audio/SoundBuffer.h>
 #include <SFML/Graphics/Font.h>
+#include <SFML/Graphics/RectangleShape.h>
 #include <SFML/Graphics/RenderWindow.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
@@ -67,6 +68,12 @@ static bool game_create_sound(struct sound_with_buffer *sound,
     return (true);
 }
 
+static bool game_create_rectangle_shape(sfRectangleShape **rect)
+{
+    *rect = sfRectangleShape_create();
+    return (*rect != NULL);
+}
+
 bool game_create(struct game *self, const struct arguments *args)
 {
     if (!game_create_window(&self->window, args) ||
@@ -79,6 +86,8 @@ bool game_create(struct game *self, const struct arguments *args)
             "assets/background.png") ||
         !game_create_texture(&self->resources.midground,
             "assets/midground.png") ||
+        !game_create_texture(&self->resources.gameover,
+            "assets/gameover.png") ||
         !game_create_texture(&self->resources.player, "assets/player.png") ||
         !game_create_sound(&self->resources.sounds.jump1,
             "assets/jump1.wav") ||
@@ -105,7 +114,14 @@ bool game_create(struct game *self, const struct arguments *args)
         !game_create_sprite(&self->state.play.background,
             self->resources.background) ||
         !game_create_sprite(&self->state.play.midground,
-            self->resources.midground))
+            self->resources.midground) ||
+        !game_create_sprite(&self->state.play.gameover,
+            self->resources.gameover) ||
+        !game_create_sprite(&self->state.play.player.sprite,
+            self->resources.player) ||
+        !game_create_rectangle_shape(&self->state.play.gameover_text_rect) ||
+        !game_create_text(&self->state.play.gameover_text, self) ||
+        !game_create_text(&self->state.play.jump_to_retry_text, self))
         return (false);
     self->state.music = NULL;
     game_object_vector_construct(&self->state.play.objects);
@@ -127,5 +143,24 @@ bool game_create(struct game *self, const struct arguments *args)
         (sfVector2f){40, 30});
     sfSprite_setScale(self->state.play.background, (sfVector2f){3, 3});
     sfSprite_setScale(self->state.play.midground, (sfVector2f){3, 3});
+    sfSprite_setPosition(self->state.play.gameover, (sfVector2f){50, 110});
+    sfRectangleShape_setPosition(self->state.play.gameover_text_rect,
+        (sfVector2f){0, 140});
+    sfRectangleShape_setSize(self->state.play.gameover_text_rect, (sfVector2f){
+        1000, 40});
+    sfRectangleShape_setFillColor(self->state.play.gameover_text_rect,
+        sfColor_fromRGB(53, 53, 61));
+    self->state.play.gameover_bottom_rect =
+        sfRectangleShape_copy(self->state.play.gameover_text_rect);
+    sfRectangleShape_setPosition(self->state.play.gameover_bottom_rect,
+        (sfVector2f){0, 302});
+    sfText_setString(self->state.play.jump_to_retry_text,
+        "Jump to retry your daring escape.");
+    sfText_setPosition(self->state.play.jump_to_retry_text, (sfVector2f){
+        275, 305});
+    sfText_setFillColor(self->state.play.gameover_text,
+        sfColor_fromRGB(255, 255, 255));
+    sfText_setFillColor(self->state.play.distance_text,
+        sfColor_fromRGB(255, 255, 255));
     return (true);
 }

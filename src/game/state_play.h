@@ -21,4 +21,9 @@ struct game_state_play {
     sfView *background_view;
     sfText *distance_text;
     sfView *distance_text_view;
+    sfSprite *gameover;
+    sfRectangleShape *gameover_text_rect;
+    sfText *gameover_text;
+    sfRectangleShape *gameover_bottom_rect;
+    sfText *jump_to_retry_text;
 };

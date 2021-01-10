@@ -19,7 +19,6 @@ enum sequence_object_type {
 
 struct game_state_play_sequence {
     size_t current_index;
-    size_t next_index;
     size_t next_type;
     sfVector2f position;
     float width;

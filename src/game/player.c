@@ -209,16 +209,14 @@ void game_player_update(struct game_player *player, struct game *game)
     apply_acceleration_and_velocity(player, game);
 }
 
-struct game_player game_player_create(struct game_resources *resources)
+void game_player_create(struct game_player *player)
 {
-    struct game_player result = {0};
-
-    result.acceleration = (sfVector2f){.01f, .25f};
-    result.velocity.x = 1.25f;
-    result.max_velocity = DEFAULT_MAX_VELOCITY;
-    result.sprite = sfSprite_create();
-    MY_ASSERT(result.sprite != NULL);
-    sfSprite_setTexture(result.sprite, resources->player, sfFalse);
-    sfSprite_setPosition(result.sprite, (sfVector2f){0, 90 - 16});
-    return (result);
+    player->is_dead = false;
+    player->acceleration = (sfVector2f){.01f, .25f};
+    player->velocity.x = 1.25f;
+    player->max_velocity = DEFAULT_MAX_VELOCITY;
+    player->on_floor = true;
+    player->jump = 0;
+    sfSprite_setPosition(player->sprite, (sfVector2f){0, 90 - 16});
+    sfSprite_setTextureRect(player->sprite, (sfIntRect){0});
 }

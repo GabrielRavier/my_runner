@@ -6,15 +6,19 @@
 */
 
 #include "../update.h"
-#include "../../random.h"
 #include "../object/building_bottom.h"
 #include "../object/hallway_top.h"
+#include "../set/mode.h"
+#include "../../random.h"
+#include "../../text_utils.h"
+#include "../../top_score.h"
 #include "my/assert.h"
 #include "my/macros.h"
 #include <SFML/Graphics/Color.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/View.h>
+#include <SFML/Window/Keyboard.h>
 #include <math.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -115,7 +119,7 @@ static enum sequence_object_type get_next_object_type(struct game *game)
 static void game_update_play_sequence(struct game_state_play_sequence *self,
     struct game *game)
 {
-    enum sequence_object_type type = get_next_object_type(game);
+    enum sequence_object_type type;
     float gap;
     float drop;
     float max_j;
@@ -124,6 +128,7 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     if (self->position.x + self->width >
         sfSprite_getPosition(game->state.play.player.sprite).x + 480)
         return;
+    type = get_next_object_type(game);
     if (self->current_index == 0) {
         self->position.x = -60;
         self->position.y = 90;
@@ -172,10 +177,16 @@ static void game_update_play_sequence(struct game_state_play_sequence *self,
     ++self->current_index;
 }
 
+static bool is_jumping(void)
+{
+    return sfKeyboard_isKeyPressed(sfKeyX) || sfKeyboard_isKeyPressed(sfKeyC);
+}
+
 static void game_update_play(struct game *self)
 {
     struct game_object *i;
     sfVector2f player_position;
+    long long distance_traveled;
 
     game_update_play_sequence(&self->state.play.sequence, self);
     GAME_OBJECT_VECTOR_FOR_EACH(&self->state.play.objects, i)
@@ -183,12 +194,28 @@ static void game_update_play(struct game *self)
             i->update(i, self);
     game_player_update(&self->state.play.player, self);
     player_position = sfSprite_getPosition(self->state.play.player.sprite);
+    distance_traveled = player_position.x / 10;
     player_position.x += 200;
     player_position.y = MY_MIN(player_position.y, 300);
     sfView_setCenter(self->state.camera, player_position);
     sfView_setCenter(self->state.play.background_view, player_position);
     sfView_setCenter(self->state.play.midground_view, player_position);
     game_update_play_background(self);
+    text_set_printf(self->state.play.distance_text, "%lldm", distance_traveled);
+    sfText_setPosition(self->state.play.distance_text, (sfVector2f){480 -
+        sfText_getLocalBounds(self->state.play.distance_text).width, 0});
+    if (self->state.play.player.is_dead) {
+        text_set_printf(self->state.play.gameover_text,
+            "You ran %lldm before falling to your death.", distance_traveled);
+        sfText_setPosition(self->state.play.gameover_text, (sfVector2f){
+            (int)((480 / 2) - (
+            sfText_getLocalBounds(self->state.play.gameover_text).width / 2)),
+            160});
+        if (get_top_score() < distance_traveled)
+            set_top_score(distance_traveled);
+        if (is_jumping())
+            game_set_mode(self, GAME_MODE_PLAY);
+    }
 }
 
 void game_update(struct game *self)

@@ -11,6 +11,7 @@
 #include <SFML/Audio/Sound.h>
 #include <SFML/Audio/SoundBuffer.h>
 #include <SFML/Graphics/Font.h>
+#include <SFML/Graphics/RectangleShape.h>
 #include <SFML/Graphics/RenderWindow.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
@@ -28,6 +29,11 @@ void game_destroy(struct game *self)
 {
     sfMusic_destroy(self->state.music);
     game_object_vector_destroy(&self->state.play.objects);
+    sfText_destroy(self->state.play.jump_to_retry_text);
+    sfRectangleShape_destroy(self->state.play.gameover_bottom_rect);
+    sfRectangleShape_destroy(self->state.play.gameover_text_rect);
+    sfText_destroy(self->state.play.gameover_text);
+    sfSprite_destroy(self->state.play.gameover);
     sfSprite_destroy(self->state.play.player.sprite);
     sfSprite_destroy(self->state.play.midground);
     sfSprite_destroy(self->state.play.background);
@@ -48,6 +54,7 @@ void game_destroy(struct game *self)
     destroy_sound_with_buffer(&self->resources.sounds.jump3);
     destroy_sound_with_buffer(&self->resources.sounds.jump2);
     destroy_sound_with_buffer(&self->resources.sounds.jump1);
+    sfTexture_destroy(self->resources.gameover);
     sfTexture_destroy(self->resources.midground);
     sfTexture_destroy(self->resources.background);
     sfTexture_destroy(self->resources.player);

@@ -27,12 +27,7 @@ static void game_draw_play(struct game_state_play *self, struct game *game,
     sfRenderWindow *window)
 {
     struct game_object *i;
-    text_set_printf(self->distance_text, "%lldm", (long long)
-        sfSprite_getPosition(self->player.sprite).x / 10);
 
-    sfText_setPosition(self->distance_text, (sfVector2f){480 -
-        sfText_getLocalBounds(self->distance_text).width, 0});
-    sfText_setFillColor(self->distance_text, sfColor_fromRGB(255, 255, 255));
     sfRenderWindow_clear(window, sfColor_fromRGB(176, 176, 191));
     sfRenderWindow_setView(window, self->background_view);
     sfRenderWindow_drawSprite(window, self->background, NULL);
@@ -44,7 +39,17 @@ static void game_draw_play(struct game_state_play *self, struct game *game,
             i->draw(i, window);
     sfRenderWindow_drawSprite(window, self->player.sprite, NULL);
     sfRenderWindow_setView(window, self->distance_text_view);
-    sfRenderWindow_drawText(window, self->distance_text, NULL);
+    if (!self->player.is_dead)
+        sfRenderWindow_drawText(window, self->distance_text, NULL);
+    else {
+        sfRenderWindow_drawRectangleShape(window, self->gameover_text_rect,
+            NULL);
+        sfRenderWindow_drawSprite(window, self->gameover, NULL);
+        sfRenderWindow_drawRectangleShape(window, self->gameover_bottom_rect,
+            NULL);
+        sfRenderWindow_drawText(window, self->jump_to_retry_text, NULL);
+        sfRenderWindow_drawText(window, self->gameover_text, NULL);
+    }
 }
 
 void game_draw(struct game *self)

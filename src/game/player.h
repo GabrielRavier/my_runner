@@ -29,4 +29,4 @@ struct game_player {
 };
 
 void game_player_update(struct game_player *player, struct game *game);
-struct game_player game_player_create(struct game_resources *resources);
+void game_player_create(struct game_player *player);

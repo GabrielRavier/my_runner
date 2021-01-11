@@ -14,7 +14,7 @@
 #include "../../../game.h"
 #include "../../../text_utils.h"
 #include "../../../top_score.h"
-#include "my/macros.h"
+#include "my/cpp-like/algorithm.h"
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/View.h>
 

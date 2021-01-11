@@ -11,7 +11,7 @@
 #include "../../../../random.h"
 #include "my/assert.h"
 #include "my/ctype.h"
-#include "my/macros.h"
+#include "my/cpp-like/algorithm.h"
 #include "my/my_string.h"
 #include <math.h>
 

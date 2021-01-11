@@ -10,7 +10,7 @@
 #include "../is_jumping.h"
 #include "../../game.h"
 #include "../../random.h"
-#include "my/macros.h"
+#include "my/cpp-like/algorithm.h"
 #include <SFML/Audio/Sound.h>
 #include <SFML/Graphics/View.h>
 

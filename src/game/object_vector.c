@@ -7,7 +7,7 @@
 
 #include "object_vector.h"
 #include "object.h"
-#include "my/macros.h"
+#include "my/cpp-like/algorithm.h"
 #include "my/stdlib.h"
 #include "my/assert.h"
 #include <SFML/Graphics/Sprite.h>

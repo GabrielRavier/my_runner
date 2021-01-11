@@ -7,7 +7,7 @@
 
 #include "internal.h"
 #include "../state.h"
-#include "my/macros.h"
+#include "my/cpp-like/algorithm.h"
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/View.h>

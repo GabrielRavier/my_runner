@@ -83,4 +83,3 @@ void game_player_apply_velocity(struct game_player *self, struct game *game)
     }
     sfSprite_setPosition(self->sprite, state.position_after);
 }
-
